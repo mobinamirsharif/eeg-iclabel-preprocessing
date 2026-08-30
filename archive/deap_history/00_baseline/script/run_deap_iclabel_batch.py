@@ -1,0 +1,311 @@
+import os
+import sys
+import time
+import json
+import pickle
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import mne
+from mne.preprocessing import ICA
+from mne_icalabel import label_components
+import kagglehub
+
+# Configuration
+RANDOM_SEED = 42
+N_COMPONENTS = 15
+SAMPLING_RATE = 128.0
+LOW_FREQ = 1.0
+HIGH_FREQ = 45.0
+
+BASE_OUTPUT_DIR = "ICLabel_DEAP_Results"
+DIR_CLEANED = os.path.join(BASE_OUTPUT_DIR, "cleaned_data")
+DIR_FIGURES = os.path.join(BASE_OUTPUT_DIR, "figures")
+DIR_REPORTS = os.path.join(BASE_OUTPUT_DIR, "iclabel_reports")
+DIR_SUMMARY = os.path.join(BASE_OUTPUT_DIR, "summary")
+DIR_BENCHMARK = os.path.join(BASE_OUTPUT_DIR, "benchmark")
+
+for d in [DIR_CLEANED, DIR_FIGURES, DIR_REPORTS, DIR_SUMMARY, DIR_BENCHMARK]:
+    os.makedirs(d, exist_ok=True)
+
+DEAP_32_CHANNELS = [
+    'Fp1', 'AF3', 'F3', 'F7', 'FC5', 'FC1', 'C3', 'T7', 
+    'CP5', 'CP1', 'P3', 'P7', 'Pz', 'O1', 'Oz', 'O2', 
+    'P4', 'P8', 'CP6', 'CP2', 'Cz', 'C4', 'T8', 'FC6', 
+    'FC2', 'F4', 'F8', 'AF4', 'Fp2', 'Fz', 'PO3', 'PO4'
+]
+
+ICLABEL_CLASSES = [
+    "brain", "muscle artifact", "eye blink", "heart beat", 
+    "line noise", "channel noise", "other"
+]
+
+ARTIFACT_CLASSES = [
+    "muscle artifact", "eye blink", "heart beat", 
+    "line noise", "channel noise"
+]
+
+print("Resolving DEAP dataset path via kagglehub...")
+dataset_root = kagglehub.dataset_download("manh123df/deap-dataset")
+
+data_dir = None
+for root, dirs, files in os.walk(dataset_root):
+    if "s01.dat" in files:
+        data_dir = root
+        break
+
+if not data_dir:
+    print("Error: s01.dat not found in dataset path.")
+    sys.exit(1)
+
+print(f"Dataset path: {data_dir}")
+montage = mne.channels.make_standard_montage('standard_1020')
+
+global_subject_summaries = []
+benchmark_records = []
+total_class_counts = {cls_name: 0 for cls_name in ICLABEL_CLASSES}
+
+total_batch_start_time = time.perf_counter()
+
+# Loop across all 32 subjects
+for subject_idx in range(1, 33):
+    sub_id_str = f"s{subject_idx:02d}"
+    file_name = f"{sub_id_str}.dat"
+    file_path = os.path.join(data_dir, file_name)
+    
+    if not os.path.exists(file_path):
+        print(f"[{sub_id_str}] File not found, skipping.")
+        continue
+
+    print(f"\n[{sub_id_str}] Processing pipeline started...")
+    subject_start_time = time.perf_counter()
+
+    try:
+        with open(file_path, 'rb') as f:
+            raw_payload = pickle.load(f, encoding='latin1')
+        
+        full_data_matrix = raw_payload['data']
+        total_trials = full_data_matrix.shape[0]
+        
+        # Select 32 EEG channels and concatenate 5 trials for fast robust ICA
+        eeg_channels_only = full_data_matrix[:, :32, :]
+        continuous_eeg = np.concatenate([eeg_channels_only[t] for t in range(5)], axis=1)
+
+        info = mne.create_info(ch_names=DEAP_32_CHANNELS, sfreq=SAMPLING_RATE, ch_types='eeg')
+        raw_mne = mne.io.RawArray(continuous_eeg * 1e-6, info, verbose=False)
+        raw_mne.set_montage(montage, verbose=False)
+
+        raw_mne.filter(l_freq=LOW_FREQ, h_freq=HIGH_FREQ, fir_design='firwin', verbose=False)
+        raw_mne.set_eeg_reference('average', projection=False, verbose=False)
+
+        # Extended Infomax ICA (10 components)
+        ica = ICA(
+            n_components=10,
+            method='infomax',
+            fit_params=dict(extended=True),
+            random_state=RANDOM_SEED
+        )
+        ica.fit(raw_mne, verbose=False)
+
+        # ICLabel inference
+        ic_classification = label_components(raw_mne, ica, method='iclabel')
+        predicted_labels = ic_classification['labels']
+        probability_values = ic_classification['y_pred_proba']
+
+        component_reports = []
+        excluded_component_indices = []
+        subject_class_counts = {cls_name: 0 for cls_name in ICLABEL_CLASSES}
+
+        for comp_idx, (assigned_label, prob_val) in enumerate(zip(predicted_labels, probability_values)):
+            prob_float = float(prob_val)
+            if assigned_label in subject_class_counts:
+                subject_class_counts[assigned_label] += 1
+            if assigned_label in total_class_counts:
+                total_class_counts[assigned_label] += 1
+            
+            is_excluded = assigned_label in ARTIFACT_CLASSES
+            exclusion_reason = f"Classified as {assigned_label} with probability {prob_float:.4f}" if is_excluded else "Retained as brain/other signal"
+
+            if is_excluded:
+                excluded_component_indices.append(comp_idx)
+
+            comp_meta = {
+                "component_index": int(comp_idx),
+                "predicted_class": assigned_label,
+                "confidence_probability": prob_float,
+                "excluded": is_excluded,
+                "exclusion_reason": exclusion_reason
+            }
+            component_reports.append(comp_meta)
+
+        # Reconstruct Cleaned EEG
+        raw_cleaned = raw_mne.copy()
+        ica.exclude = excluded_component_indices
+        ica.apply(raw_cleaned, verbose=False)
+
+        # 1. Save Cleaned .fif file
+        cleaned_fif_filename = f"deap_{sub_id_str}_cleaned.fif"
+        cleaned_fif_path = os.path.join(DIR_CLEANED, cleaned_fif_filename)
+        raw_cleaned.save(cleaned_fif_path, overwrite=True, verbose=False)
+
+        # 2. Save Raw vs Cleaned Comparison Figure (100% English)
+        fig_filename = f"{sub_id_str}_raw_vs_clean.png"
+        fig_path = os.path.join(DIR_FIGURES, fig_filename)
+        
+        display_duration_sec = 5.0
+        n_display_samples = int(display_duration_sec * SAMPLING_RATE)
+        time_axis = np.linspace(0.0, display_duration_sec, n_display_samples)
+        
+        raw_sample = raw_mne.get_data(picks=0, start=0, stop=n_display_samples)[0] * 1e6
+        clean_sample = raw_cleaned.get_data(picks=0, start=0, stop=n_display_samples)[0] * 1e6
+
+        plt.figure(figsize=(12, 5), dpi=300)
+        plt.plot(time_axis, raw_sample, 'r--', label='Raw EEG (With Artifacts)', alpha=0.75, linewidth=1.2)
+        plt.plot(time_axis, clean_sample, 'g-', label='Artifact-Reduced EEG (After ICLabel Removal)', alpha=0.9, linewidth=1.4)
+        plt.title(f"DEAP Subject {sub_id_str.upper()} (Electrode Fp1) - Raw vs. Artifact-Reduced EEG", fontsize=11, fontweight='bold')
+        plt.xlabel("Time (seconds)", fontsize=10)
+        plt.ylabel("Voltage Amplitude (uV)", fontsize=10)
+        plt.legend(loc='upper right', fontsize=9)
+        plt.grid(True, linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.savefig(fig_path)
+        plt.close()
+
+        subject_elapsed_time = time.perf_counter() - subject_start_time
+
+        # 3. Save Per-Subject JSON Report
+        subject_json_report = {
+            "subject_id": sub_id_str,
+            "total_trials_processed": total_trials,
+            "sampling_rate_hz": SAMPLING_RATE,
+            "eeg_channel_count": len(DEAP_32_CHANNELS),
+            "bandpass_filter_hz": [LOW_FREQ, HIGH_FREQ],
+            "referencing": "Common Average Reference (CAR)",
+            "ica_method": "Extended Infomax",
+            "total_ica_components": 10,
+            "excluded_components_count": len(excluded_component_indices),
+            "excluded_components_percentage": float(round((len(excluded_component_indices) / 10) * 100, 2)),
+            "excluded_component_indices": excluded_component_indices,
+            "component_details": component_reports,
+            "hardware": {
+                "execution_device": "CPU (MNE-Python / PyTorch ICLabel backend)",
+                "processing_time_seconds": float(round(subject_elapsed_time, 4))
+            },
+            "output_files": {
+                "cleaned_eeg_fif": cleaned_fif_path,
+                "comparison_figure": fig_path
+            }
+        }
+        
+        json_report_filename = f"{sub_id_str}_iclabel_report.json"
+        json_report_path = os.path.join(DIR_REPORTS, json_report_filename)
+        with open(json_report_path, "w", encoding="utf-8") as f:
+            json.dump(subject_json_report, f, indent=4)
+
+        global_subject_summaries.append({
+            "subject_id": sub_id_str,
+            "status": "Success",
+            "total_trials": total_trials,
+            "ica_components": 10,
+            "excluded_components": len(excluded_component_indices),
+            "excluded_percentage": float(round((len(excluded_component_indices) / 10) * 100, 2)),
+            "brain_components": subject_class_counts["brain"],
+            "muscle_components": subject_class_counts["muscle artifact"],
+            "eye_components": subject_class_counts["eye blink"],
+            "heart_components": subject_class_counts["heart beat"],
+            "line_noise_components": subject_class_counts["line noise"],
+            "channel_noise_components": subject_class_counts["channel noise"],
+            "other_components": subject_class_counts["other"],
+            "processing_time_sec": float(round(subject_elapsed_time, 4))
+        })
+
+        benchmark_records.append({
+            "subject_id": sub_id_str,
+            "processing_time_seconds": float(round(subject_elapsed_time, 4)),
+            "device": "CPU"
+        })
+
+        print(f"[{sub_id_str}] Successfully processed in {subject_elapsed_time:.2f}s (Excluded {len(excluded_component_indices)}/10 artifact ICs).")
+
+    except Exception as e:
+        subject_elapsed_time = time.perf_counter() - subject_start_time
+        print(f"[{sub_id_str}] Error: {str(e)}")
+        global_subject_summaries.append({
+            "subject_id": sub_id_str,
+            "status": f"Failed: {str(e)}",
+            "total_trials": 0,
+            "ica_components": 0,
+            "excluded_components": 0,
+            "excluded_percentage": 0.0,
+            "brain_components": 0,
+            "muscle_components": 0,
+            "eye_components": 0,
+            "heart_components": 0,
+            "line_noise_components": 0,
+            "channel_noise_components": 0,
+            "other_components": 0,
+            "processing_time_sec": float(round(subject_elapsed_time, 4))
+        })
+        benchmark_records.append({
+            "subject_id": sub_id_str,
+            "processing_time_seconds": float(round(subject_elapsed_time, 4)),
+            "device": "CPU (Failed)"
+        })
+
+total_batch_duration = time.perf_counter() - total_batch_start_time
+
+# Save Global Summaries
+df_summary = pd.DataFrame(global_subject_summaries)
+df_summary.to_csv(os.path.join(DIR_SUMMARY, "deap_32_subjects_summary.csv"), index=False)
+
+df_benchmark = pd.DataFrame(benchmark_records)
+df_benchmark.to_csv(os.path.join(DIR_BENCHMARK, "processing_times.csv"), index=False)
+
+processing_times_successful = [s["processing_time_sec"] for s in global_subject_summaries if s["status"] == "Success"]
+
+global_summary_json = {
+    "experiment_metadata": {
+        "dataset_name": "DEAP (Database for Emotion Analysis using Physiological Signals)",
+        "total_subjects_evaluated": len(global_subject_summaries),
+        "successful_subjects_count": len(processing_times_successful),
+        "failed_subjects_count": len(global_subject_summaries) - len(processing_times_successful),
+        "total_trials_processed": int(sum(s["total_trials"] for s in global_subject_summaries)),
+        "eeg_channels": 32,
+        "sampling_rate_hz": SAMPLING_RATE,
+        "passband_filter_hz": [LOW_FREQ, HIGH_FREQ],
+        "ica_algorithm": "Extended Infomax",
+        "random_seed": RANDOM_SEED
+    },
+    "artifact_component_accounting": {
+        "total_ica_components_extracted": int(sum(s["ica_components"] for s in global_subject_summaries)),
+        "total_excluded_components": int(sum(s["excluded_components"] for s in global_subject_summaries)),
+        "aggregate_exclusion_rate_percentage": float(round((sum(s["excluded_components"] for s in global_subject_summaries) / max(1, sum(s["ica_components"] for s in global_subject_summaries))) * 100, 2)),
+        "total_brain_components": total_class_counts["brain"],
+        "total_muscle_components": total_class_counts["muscle artifact"],
+        "total_eye_components": total_class_counts["eye blink"],
+        "total_heart_components": total_class_counts["heart beat"],
+        "total_line_noise_components": total_class_counts["line noise"],
+        "total_channel_noise_components": total_class_counts["channel noise"],
+        "total_other_components": total_class_counts["other"]
+    },
+    "hardware_benchmark_summary": {
+        "execution_device": "CPU (AMD Ryzen 9 5900HS / Standard MNE-Python PyTorch pipeline)",
+        "gpu_acceleration_utilized": False,
+        "total_batch_time_seconds": float(round(total_batch_duration, 4)),
+        "average_subject_processing_time_seconds": float(round(np.mean(processing_times_successful), 4)) if processing_times_successful else 0.0,
+        "minimum_subject_processing_time_seconds": float(round(np.min(processing_times_successful), 4)) if processing_times_successful else 0.0,
+        "maximum_subject_processing_time_seconds": float(round(np.max(processing_times_successful), 4)) if processing_times_successful else 0.0
+    },
+    "per_subject_records": global_subject_summaries
+}
+
+with open(os.path.join(DIR_SUMMARY, "deap_32_subjects_summary.json"), "w", encoding="utf-8") as f:
+    json.dump(global_summary_json, f, indent=4)
+
+print("\n" + "="*80)
+print(f"Batch Processing Completed Successfully.")
+print(f"Total Batch Runtime: {total_batch_duration:.2f} seconds ({total_batch_duration/60:.2f} minutes)")
+print(f"Average Subject Processing Time: {np.mean(processing_times_successful):.2f} seconds")
+print(f"Total Artifact Components Excluded: {sum(s['excluded_components'] for s in global_subject_summaries)}")
+print(f"All outputs saved to: {os.path.abspath(BASE_OUTPUT_DIR)}")
+print("="*80)

@@ -74,6 +74,14 @@ Across 960 ICA components, that screening run produced 775 Heart Beat prediction
 
 `src/deap/run_deap_screening_pipeline.py` preserves the explicit five-trial screening configuration by default, records available and used trials separately, reports all seven classes, and performs no automatic component removal. The reconciled aggregate artifacts exclude FIF files, raw/cleaned signal traces, and individual participant topographies.
 
+## Historical version reconciliation
+
+The original Baseline-to-V4 scripts are preserved byte-for-byte under `archive/deap_history/` together with aggregate summaries, processing benchmarks, and per-subject ICLabel JSON reports. `src/deap/build_version_history.py` validates every seven-class total and rebuilds `results/deap_version_history/` from those archived cohort CSVs.
+
+The historical sequence is not analyzed as a controlled ablation. Baseline, V1, and V2 used 10 components per subject; V3 used 15; and V4 used 30 after all reports recorded rank 31. Channel mapping, downstream filter request, confidence logging, boundary handling, component count, and rank logic changed at different stages. ICA was refitted independently, so changes in class distributions are descriptive and do not identify any single setting as causal.
+
+Four original PDFs are preserved unchanged in `archive/legacy_reports/`. They are primary records of how the project was described at the time, but their definitive artifact-removal, physiological, GPU, pure-brain, and Nyquist-collapse claims are superseded by the corrected findings.
+
 ## Data and reproducibility policy
 
-Raw/licensed EEG data are not distributed in this repository. Scripts obtain BNCI2014_001 through MOABB and users must obtain DEAP under the official EULA. Only aggregate DEAP prediction tables, probabilities, metadata, and a cohort figure are versioned; reconstructed FIF files and individual signal traces are excluded.
+Raw/licensed EEG data are not distributed in this repository. Scripts obtain BNCI2014_001 through MOABB and users must obtain DEAP under the official EULA. Aggregate DEAP prediction tables, probabilities, metadata, per-subject ICLabel prediction reports, cohort figures, and historical reports are versioned; reconstructed FIF files, individual signal traces/topographies, and compressed result archives are excluded. The legacy PDFs require license and supervisor review before public release.

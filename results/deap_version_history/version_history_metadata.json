@@ -1,0 +1,106 @@
+{
+  "scope": "historical DEAP development runs",
+  "source_type": "archived aggregate outputs",
+  "versions": [
+    {
+      "stage": "Baseline",
+      "archive_directory": "00_baseline",
+      "script_name": "run_deap_iclabel_batch.py",
+      "intervention": "Original channel order; actual ICA call used 10 components despite a 15-component constant",
+      "low_hz": 1.0,
+      "high_hz": 45.0,
+      "components_per_subject": 10,
+      "crossfade_seconds": 0.0,
+      "rank_aware": false
+    },
+    {
+      "stage": "V1",
+      "archive_directory": "01_channel_order",
+      "script_name": "ICLabel_DEAP_corrected.py",
+      "intervention": "Corrected DEAP/BioSemi channel order and strict montage validation",
+      "low_hz": 1.0,
+      "high_hz": 45.0,
+      "components_per_subject": 10,
+      "crossfade_seconds": 0.0,
+      "rank_aware": false
+    },
+    {
+      "stage": "V2",
+      "archive_directory": "02_filter_confidence",
+      "script_name": "ICLabel_DEAP_corrected_v2.py",
+      "intervention": "Raised downstream high cutoff and added a confidence probe",
+      "low_hz": 1.0,
+      "high_hz": 55.0,
+      "components_per_subject": 10,
+      "crossfade_seconds": 0.0,
+      "rank_aware": false
+    },
+    {
+      "stage": "V3",
+      "archive_directory": "03_crossfade_visual",
+      "script_name": "ICLabel_DEAP_corrected_v3.py",
+      "intervention": "Added a 0.5-second trial crossfade, 15 components, and visual review outputs",
+      "low_hz": 1.0,
+      "high_hz": 55.0,
+      "components_per_subject": 15,
+      "crossfade_seconds": 0.5,
+      "rank_aware": false
+    },
+    {
+      "stage": "V4",
+      "archive_directory": "04_rank_aware",
+      "script_name": "ICLabel_DEAP_final.py",
+      "intervention": "Selected rank minus one components; all archived reports recorded rank 31 and 30 components",
+      "low_hz": 1.0,
+      "high_hz": 55.0,
+      "components_per_subject": 30,
+      "crossfade_seconds": 0.5,
+      "rank_aware": true
+    }
+  ],
+  "provenance": [
+    {
+      "stage": "Baseline",
+      "archive_directory": "00_baseline",
+      "script": "run_deap_iclabel_batch.py",
+      "script_sha256": "8afefb4df5cef2254d160492e07a17a236e190c613bc273b42c6d22399282db6",
+      "summary_csv_sha256": "b935e40dacc2216821f04d7d989c13bdee5394eb44be0945213d43f8ddda97e8"
+    },
+    {
+      "stage": "V1",
+      "archive_directory": "01_channel_order",
+      "script": "ICLabel_DEAP_corrected.py",
+      "script_sha256": "073bf225f39f141c230f33070f92514be548da11cfd663bff751212ccc6e2676",
+      "summary_csv_sha256": "1e8af8196fe1da3114b19759a4676cefb88ab6f61ca384009ed692e9cb8774ea"
+    },
+    {
+      "stage": "V2",
+      "archive_directory": "02_filter_confidence",
+      "script": "ICLabel_DEAP_corrected_v2.py",
+      "script_sha256": "5e4875c5460993623118d267a776741c3f290018fe72b76b49b877b8e29f7965",
+      "summary_csv_sha256": "1bd4dbdfd3e57161bdc2f4e6bb8ad7022a65f1e6d7bfdcc7190d9a1ce86c7ffe"
+    },
+    {
+      "stage": "V3",
+      "archive_directory": "03_crossfade_visual",
+      "script": "ICLabel_DEAP_corrected_v3.py",
+      "script_sha256": "0f3470df9b8c4e562e1410adae90bfcca0df61a160ba496d4a51021bc21b64f7",
+      "summary_csv_sha256": "2627d19200a9b2015073edcdb4be317794b1c6b6791a18aecc44e9a751b69247"
+    },
+    {
+      "stage": "V4",
+      "archive_directory": "04_rank_aware",
+      "script": "ICLabel_DEAP_final.py",
+      "script_sha256": "8123fbe9ecf18fc4870b68d23ccfb31161af7a56caac4341ecd5f30e3d2070ac",
+      "summary_csv_sha256": "de03a16361e13af57bf1195671bd59b5c83fb67573697afee3f6c28706a80717"
+    }
+  ],
+  "interpretation_limits": [
+    "ICLabel outputs are model predictions, not component ground truth.",
+    "The five stages are not a one-factor ablation study because multiple settings changed.",
+    "ICA was independently refitted in every run, so component indices are not paired across stages.",
+    "All stages used five of 40 available trials per subject for ICA.",
+    "The archived downstream 55 Hz cutoff cannot restore frequencies absent from the preprocessed DEAP package.",
+    "The series does not establish sampling rate, passband, channel order, crossfade, rank, or component count as a sole cause."
+  ]
+}

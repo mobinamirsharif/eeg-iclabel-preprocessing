@@ -1,5 +1,7 @@
 # Troubleshooting timeline
 
+The original scripts, per-subject prediction reports, aggregate outputs, and legacy PDFs for this timeline are preserved under `archive/`. The current interpretation below supersedes definitive claims made in the historical reports.
+
 ## 1. Initial DEAP batch evaluation
 
 The first batch evaluation found a high proportion of Heart Beat predictions. An early physiological explanation linked this pattern to emotional video stimuli. That explanation is retained only as a rejected initial hypothesis.
@@ -42,3 +44,17 @@ The four-condition script completed 36 subject/condition fits with no failures. 
 The later DEAP screening output contained 960 predictions, including 775 Heart Beat calls. Its metadata counted all 40 available trials per subject as processed even though the ICA input used five trials per subject. Reconciliation now reports 1,280 trials available and 160 trials used for ICA, retains all seven classes, and replaces “confirmed artifact removal” terminology with ICLabel prediction and artifact-policy terminology.
 
 The publication-safe repository includes the corrected aggregate outputs and a non-destructive screening pipeline. It excludes reconstructed FIF files, individual signal traces, participant topographies, and licensed raw data.
+
+## 10. Full Baseline-to-V4 history restored
+
+The repository now includes byte-identical snapshots of the five historical scripts and the safe numeric results required to reproduce their cohort distributions. The reconciled sequence is:
+
+| Stage | Main change | Heart Beat predictions |
+|---|---|---:|
+| Baseline | Original mapping and 10-component ICA call | 219/320 (68.44%) |
+| V1 | Corrected channel order | 234/320 (73.13%) |
+| V2 | 55 Hz downstream cutoff request and confidence probe | 233/320 (72.81%) |
+| V3 | Crossfade, visual review, and 15 components | 372/480 (77.50%) |
+| V4 | Rank-minus-one logic and 30 components | 775/960 (80.73%) |
+
+This is not a controlled component-count or sampling-rate experiment. The sequence documents the debugging process, while the separate four-condition BCI experiment provides the clean sampling-rate/passband contrasts.

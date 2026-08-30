@@ -1,0 +1,6 @@
+Stage,Intervention,Sampling Rate (Hz),Filter Low (Hz),Filter High (Hz),Subjects,Trials Available,Trials Used for ICA,ICA Components per Subject,ICA Components Total,Crossfade (s),Rank-Aware,Brain Predictions,Muscle Predictions,Eye Blink Predictions,Heart Beat Predictions,Line Noise Predictions,Channel Noise Predictions,Other Predictions,Artifact-Policy Predictions,Brain Percentage,Heart Beat Percentage,Artifact-Policy Percentage
+Baseline,Original channel order; actual ICA call used 10 components despite a 15-component constant,128.0,1.0,45.0,32,1280,160,10,320,0.0,False,1,5,2,219,0,0,93,226,0.31,68.44,70.63
+V1,Corrected DEAP/BioSemi channel order and strict montage validation,128.0,1.0,45.0,32,1280,160,10,320,0.0,False,16,9,2,234,0,2,57,247,5.0,73.13,77.19
+V2,Raised downstream high cutoff and added a confidence probe,128.0,1.0,55.0,32,1280,160,10,320,0.0,False,15,10,2,233,0,2,58,247,4.69,72.81,77.19
+V3,"Added a 0.5-second trial crossfade, 15 components, and visual review outputs",128.0,1.0,55.0,32,1280,160,15,480,0.5,False,21,13,6,372,0,2,66,393,4.38,77.5,81.88
+V4,Selected rank minus one components; all archived reports recorded rank 31 and 30 components,128.0,1.0,55.0,32,1280,160,30,960,0.5,True,29,15,8,775,0,7,126,805,3.02,80.73,83.85

@@ -12,6 +12,8 @@
 8. Changing the passband produced larger aggregate shifts than changing sampling rate in the clean B-vs-D contrast. In particular, Line Noise predictions fell from 17.04% to 2.96% at 250 Hz and from 17.04% to 3.70% at 128 Hz when moving to 4–45 Hz.
 9. The archived final DEAP screening run used five of 40 available trials per subject, 32 subjects, and 30 ICA components per subject, yielding 960 predictions in total.
 10. That DEAP screening run produced 775 Heart Beat predictions (80.73%), 29 Brain predictions (3.02%), and 156 predictions across the remaining five classes. No cardiac reference channel was supplied to ICLabel.
+11. The reconciled historical sequence produced 219/320 (68.44%) Baseline, 234/320 (73.13%) V1, 233/320 (72.81%) V2, 372/480 (77.50%) V3, and 775/960 (80.73%) V4 Heart Beat predictions.
+12. The historical scripts show that all five stages used five of 40 trials per subject. Their cohort metadata recorded 1,280 available trials, while only 160 trials entered ICA in each stage.
 
 ## Corrected BCI statement
 
@@ -37,6 +39,10 @@ The result is specific to these recordings and this pipeline. ICA was refitted u
 - “All 40 DEAP trials per subject were used for ICA” — the initial code used five.
 - “1,280 DEAP trials were processed by ICA” — 1,280 were available, while 160 were used in the archived final screening run.
 - “805 DEAP components were confirmed artifacts and removed successfully” — these were argmax policy calls, not ground-truth artifact labels.
+- “The V1-V4 sequence proves that increasing component count causes Heart Beat collapse” — multiple settings changed and ICA was refitted independently.
+- “The visual review proved that every Heart Beat prediction was 100% Brain” — the selected plots support review but do not provide component ground truth.
+- “Rank-aware ICA solved the DEAP anomaly” — the archived V4 output contained the highest observed Heart Beat proportion, 80.73%.
+- “ICLabel requires sampling above 200 Hz” — neither the archived outputs nor the controlled comparison establish that threshold.
 - “All recordings for all nine BCI subjects were processed” — the archived code selected the first session/run only.
 - “GPU benchmark” for the BCI pipeline — no GPU was explicitly selected or measured there.
 - “Pure brain signal” and “confirmed noise” — replaced with ICLabel prediction terminology.
@@ -49,6 +55,10 @@ The four-condition comparison has now been executed for subjects 1–9 using ses
 ## Reconciled DEAP screening artifacts
 
 The publication-safe DEAP artifacts are stored in `results/deap_screening/`. They include a corrected subject summary, a Heart Beat probability table, metadata, and a cohort distribution figure. The original `.fif` files, individual raw-versus-reconstructed traces, and subject topographies are intentionally not redistributed.
+
+## Preserved development record
+
+The exact historical scripts and their safe numeric outputs are stored in `archive/deap_history/`. The generated `results/deap_version_history/` comparison reconciles all seven classes across Baseline through V4 and records source hashes. The four original PDFs are stored unchanged in `archive/legacy_reports/` with a superseded-conclusions notice. This preserves provenance without presenting old claims as current evidence.
 
 ## Publication framing
 

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گزارش جامع پیاده‌سازی و ارزیابی مدل ICLabel روی دیتاست DEAP</title>
+    <style>
+        :root {
+            --primary: #4c1d95;
+            --primary-light: #7c3aed;
+            --accent: #db2777;
+            --border: #e9d5ff;
+            --text-dark: #2d3748;
+        }
+        * { box-sizing: border-box !important; margin: 0; padding: 0; }
+        
+        body {
+            font-family: "Vazirmatn", "Tahoma", "Segoe UI", Arial, sans-serif;
+            background-color: #faf5ff;
+            color: var(--text-dark);
+            line-height: 1.8;
+            direction: rtl;
+            text-align: right;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .document-container {
+            width: 92%;
+            max-width: 720px;
+            background: #ffffff;
+            padding: 26px 32px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.08);
+        }
+        
+        .ltr { direction: ltr !important; text-align: left !important; unicode-bidi: isolate !important; display: inline-block; }
+        
+        .cover-banner {
+            background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #db2777 100%);
+            color: white;
+            padding: 22px 24px;
+            border-radius: 8px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+        .cover-banner h1 { font-size: 1.35rem; margin-bottom: 6px; }
+        .cover-banner p { font-size: 0.84rem; color: #fdf2f8; margin-bottom: 12px; }
+        .meta-tags { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; font-size: 0.74rem; }
+        .tag { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); }
+        
+        section { margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #f3e8ff; }
+        section:last-of-type { border-bottom: none; }
+        h2.section-title { font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; border-bottom: 2px solid var(--primary-light); padding-bottom: 4px; }
+        h3 { font-size: 0.95rem; color: var(--primary-light); margin: 14px 0 6px 0; }
+        p { margin-bottom: 8px; font-size: 0.88rem; text-align: justify; }
+        
+        .metric-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 8px; 
+            margin: 12px 0; 
+            width: 100%;
+        }
+        .metric-card { 
+            background: #fdf4ff; 
+            border: 1px solid #f5d0fe; 
+            padding: 10px; 
+            border-radius: 6px; 
+            text-align: center; 
+        }
+        .metric-card .value { font-size: 1.15rem; font-weight: bold; color: #701a75; margin-bottom: 2px; direction: ltr; }
+        .metric-card .label { font-size: 0.7rem; color: #86198f; font-weight: bold; }
+        
+        .table-responsive { width: 100%; margin: 10px 0; }
+        table { 
+            width: 100% !important; 
+            table-layout: fixed !important; 
+            border-collapse: collapse; 
+            font-size: 0.72rem !important; 
+            direction: rtl; 
+            word-wrap: break-word;
+        }
+        th, td { padding: 5px 4px !important; text-align: center !important; border: 1px solid #f0abfc; overflow: hidden; }
+        th { background: #fae8ff; color: var(--primary); font-weight: bold; }
+        tr:nth-child(even) { background: #fdf4ff; }
+        td.cell-ltr { direction: ltr !important; text-align: center !important; unicode-bidi: isolate; }
+        
+        .box { padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 0.84rem; border-right: 4px solid; text-align: justify; }
+        .box-info { background: #fdf2f8; border-color: #f472b6; color: #831843; }
+        .box-danger { background: #fff1f2; border-color: #fb7185; color: #881337; }
+        .box-success { background: #f0fdf4; border-color: #4ade80; color: #166534; }
+        
+        .level-card {
+            background: #faf5ff;
+            border: 1px solid #e9d5ff;
+            border-right: 4px solid var(--primary);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+        }
+        .level-card .level-title { font-weight: bold; color: var(--primary); font-size: 0.9rem; margin-bottom: 4px; }
+        
+        .figure-container { margin: 14px 0; text-align: center; }
+        .figure-container img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--border); }
+        .caption { font-size: 0.76rem; color: #701a75; margin-top: 3px; font-style: italic; }
+        pre { background: #fdf4ff; border: 1px solid #f5d0fe; padding: 6px 8px; border-radius: 6px; font-size: 0.74rem; direction: ltr; text-align: left; }
+
+        @media print {
+            @page { size: A4 portrait; margin: 10mm 12mm; }
+            body { background: #ffffff !important; color: #000000 !important; padding: 0 !important; margin: 0 !important; display: block !important; }
+            .document-container { width: 100% !important; max-width: 100% !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 auto !important; }
+            section { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px !important; }
+            .cover-banner { background: linear-gradient(135deg, #4c1d95 0%, #db2777 100%) !important; color: #ffffff !important; -webkit-print-color-adjust: exact; padding: 12px !important; }
+            .metric-card { background: #fdf4ff !important; -webkit-print-color-adjust: exact; }
+            th { background: #fae8ff !important; -webkit-print-color-adjust: exact; }
+            tr:nth-child(even) { background: #fdf4ff !important; -webkit-print-color-adjust: exact; }
+            table, tr, td, th { break-inside: avoid !important; page-break-inside: avoid !important; font-size: 0.68rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="document-container">
+
+    <!-- Cover Banner -->
+    <div class="cover-banner">
+        <h1>گزارش جامع پیاده‌سازی و ارزیابی چندمرحله‌ای مدل ICLabel روی دیتاست DEAP</h1>
+        <p>روایت مهندسی پیاده‌سازی دسته‌ای، تحلیل ناهنجاری طبقه‌بندی و ارزیابی تجربی بر پایه شواهد</p>
+        <div class="meta-tags">
+            <span class="tag"><strong>پروژه:</strong> <span class="ltr">ICLabel DEAP Case Study</span></span>
+            <span class="tag"><strong>جامعه آماری:</strong> ۳۲ آزمودنی (<span class="ltr">s01 - s32</span>)</span>
+            <span class="tag"><strong>کانال‌ها:</strong> ۳۲ کانال <span class="ltr">EEG (BioSemi 10-20)</span></span>
+            <span class="tag"><strong>بستر پردازشی:</strong> <span class="ltr">AMD Ryzen 9 (CPU Multi-threading)</span></span>
+            <span class="tag"><strong>وضعیت پیاده‌سازی:</strong> کامل و بازتولیدپذیر</span>
+        </div>
+    </div>
+
+    <!-- Section 1: Executive Narrative -->
+    <section>
+        <h2 class="section-title">۱. خلاصه اجرایی و داستان پروژه (Executive Narrative)</h2>
+        <p>
+            برای شروع، هدف ما این بود که مدل یادگیری عمیق <strong>ICLabel</strong> (توسعه‌یافته توسط آزمایشگاه <span class="ltr">SCCN</span> دانشگاه سن‌دیگو) را روی تمام <strong>۳۲ آزمودنی دیتاست بین‌المللی DEAP</strong> پیاده‌سازی کنیم تا میزان اثربخشی آن در پالایش خودکار سیگنال‌های مغزی (<span class="ltr">Artifact-Reduced EEG</span>) را بدون دخالت دست بسنجیم.
+        </p>
+        <p>
+            پایپ‌لاین پردازش دسته‌ای (<span class="ltr">Batch Processing</span>) با موفقیت کامل بر روی پردازنده مرکزی (<span class="ltr">CPU</span>) مستقر شد و کل ۳۲ نفر را در زمان <strong>144.76 ثانیه (2.41 دقیقه)</strong> با میانگین <strong>4.52 ثانیه برای هر فرد</strong> پالایش کرد. اما در جریان ارزیابی خروجی‌ها، با یک پدیده چالش‌برانگیز مواجه شدیم: <strong>بیش از ۶۸٪ تا ۷۷٪ از مؤلفه‌ها با اطمینان بالای ۸۰٪ به عنوان نویز ضربان قلب (Heart Beat) طبقه‌بندی شدند.</strong>
+        </p>
+        <p>
+            به جای پذیرش چشم‌بسته یا توجیه غیرعلمی این عدد، یک <strong>مطالعه چندمرحله‌ای (Ablation Study در ۴ نسخه V1 تا V4)</strong> اجرا کردیم تا ریشه واقعی را مشخص کنیم. در نهایت، هم ساختار سالم کانال‌ها تثبیت شد و هم علت بنیادین این پدیده (ناسازگاری دامنه فرکانسی نایکویست) به صورت مستند استخراج گردید.
+        </p>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="value">32 / 32</div>
+                <div class="label">سابجکت‌های پردازش‌شده</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">2.41 min</div>
+                <div class="label">زمان کل پردازش دسته‌ای</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">4.52 s</div>
+                <div class="label">میانگین زمان به ازای هر فرد</div>
+            </div>
+            <div class="metric-card">
+                <div class="value">226 / 320</div>
+                <div class="label">مجموع مؤلفه‌های فیلترشده</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: 4-Stage Iteration Matrix -->
+    <section>
+        <h2 class="section-title">۲. ماتریس مقایسه‌ای نسخه‌های چهارگانه آزمایش (Ablation Study)</h2>
+        <p>برای ریشه‌یابی پدیده، ۴ نسخه متوالی از خط لوله طراحی و روی هر ۳۲ آزمودنی اجرا شد:</p>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">نسخه</th>
+                        <th style="width: 25%;">متدولوژی و تغییر اعمال‌شده</th>
+                        <th style="width: 15%;">فیلتر</th>
+                        <th style="width: 12%;">مؤلفه‌ها</th>
+                        <th style="width: 18%;">نسبت Heart Beat</th>
+                        <th style="width: 20%;">دستاورد مهندسی</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>V1</strong></td>
+                        <td>تصحیح چیدمان کانال‌های BioSemi</td>
+                        <td class="cell-ltr">1.0 - 45.0 Hz</td>
+                        <td class="cell-ltr">10 ICs</td>
+                        <td class="cell-ltr">73.1% (234/320)</td>
+                        <td>تطابق صحیح سنسورهای فضایی</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V2</strong></td>
+                        <td>افزایش باند به ۵۵Hz + لاگ Confidence</td>
+                        <td class="cell-ltr">1.0 - 55.0 Hz</td>
+                        <td class="cell-ltr">10 ICs</td>
+                        <td class="cell-ltr">72.8% (233/320)</td>
+                        <td>رد فرضیه خطای تصادفی Argmax</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V3</strong></td>
+                        <td>اعمال Crossfade + استخراج Topography</td>
+                        <td class="cell-ltr">1.0 - 55.0 Hz</td>
+                        <td class="cell-ltr">15 ICs</td>
+                        <td class="cell-ltr">77.5% (372/480)</td>
+                        <td>اثبات بصری امواج آلفای مغز</td>
+                    </tr>
+                    <tr>
+                        <td><strong>V4</strong></td>
+                        <td>تنظیم دینامیک رنک ماتریس (Rank-Aware)</td>
+                        <td class="cell-ltr">1.0 - 55.0 Hz</td>
+                        <td class="cell-ltr">30 ICs (Rank=31)</td>
+                        <td class="cell-ltr">80.7% (775/960)</td>
+                        <td>رد فرضیه افت رنک ماتریس</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section 3: 3-Level Methodological Framework -->
+    <section>
+        <h2 class="section-title">۳. تحلیل علمی چالش طبقه‌بندی (چارچوب ۳ سطحی)</h2>
+        <p>برای ارائه گزارشی کاملاً مستند و غیرقابل خدشه نزد داوران دانشگاهی، نتایج در ۳ سطح مجزا تفکیک شدند:</p>
+
+        <div class="level-card">
+            <div class="level-title">سطح ۱: مشاهدات و شواهد عینی (Observed Data)</div>
+            <p>
+                • در تمام نسخه‌ها، مدل ICLabel با میانگین اطمینان بسیار بالای <strong>۰.۸۲۳۸ (۸۲.۴٪)</strong> بخش عمده مؤلفه‌ها را در دسته <span class="ltr">Heart Beat</span> قرار داد.<br/>
+                • نرخ مؤلفه‌های چشم (<span class="ltr">Eye Blink</span>) به دلیل پیش‌پردازش اولیه توسط تیم سازنده DEAP بسیار پایین (کمتر از ۱٪) ثبت شد.<br/>
+                • با افزایش تعداد مؤلفه‌های ICA از ۱۰ به ۱۵ و ۳۰، یک <strong>روند صعودی مشاهده‌شده</strong> در انتساب نویز قلب دیده شد.
+            </p>
+        </div>
+
+        <div class="level-card">
+            <div class="level-title">سطح ۲: فرضیه‌های آزموده و ردشده با شواهد تجربی (Experimentally Falsified)</div>
+            <p>
+                • <strong>فرضیه چیدمان کانال‌ها:</strong> با تصحیح دقیق ۳۲ کانال، نرخ نویز قلب تغییری نکرد (۷۳.۱٪)؛ پس چیدمان به تنهایی عامل مشکل نبود.<br/>
+                • <strong>فرضیه پرش مرز ترایال‌ها:</strong> با اعمال انتقال نرم ۰.۵ ثانیه‌ای (Crossfade)، نرخ نویز قلب کاهش نیافت.<br/>
+                • <strong>فرضیه افت رنک ماتریس:</strong> محاسبه رنک نشان داد داده‌ها دارای رنک کامل ۳۱ از ۳۲ هستند و تفکیک با رنک کامل نه تنها مشکل را حل نکرد، بلکه نرخ نویز قلب را به ۸۰.۷٪ رساند.
+            </p>
+        </div>
+
+        <div class="level-card">
+            <div class="level-title">سطح ۳: محتمل‌ترین فرضیه مکانیسمی (Hypothesized Mechanism)</div>
+            <p>
+                قوی‌ترین تبیین علمی برای این پدیده، <strong>ناسازگاری فرکانس نمونه‌برداری دیتای ۱۲۸ هرتزی DEAP با بردار ویژگی‌های ۱ تا ۱۰۰ هرتزی ICLabel</strong> است. از آنجا که نایکویست دیتای DEAP برابر ۶۴ هرتز است، نیمی از بردار طیفی ورودی شبکه خالی می‌ماند. در غیاب فرکانس‌های بالای ۵۰ هرتز (که برای تفکیک عضله و مغز ضروری است)، فضای تصمیم‌گیری شبکه عصبی به سمت تنها کلاسی که ساختار آن کاملاً متمرکز در فرکانس پایین (زیر ۵ هرتز) است یعنی <span class="ltr">Heart Beat</span> کلاپس می‌کند.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 4: Visual Evidence -->
+    <section>
+        <h2 class="section-title">۴. مستندات تصویری و بازبینی چشمی توپوگرافی‌ها</h2>
+        <p>
+            برای راستی‌آزمایی بالینی، ۲۰ نقشه توپوگرافی سر و چگالی طیف توان (<span class="ltr">PSD</span>) از مؤلفه‌های شناسایی‌شده استخراج شد:
+        </p>
+        <div class="box box-info">
+            <strong>یافته‌های بازبینی چشمی (Visual Inspection):</strong>
+            <ul style="margin-right: 18px; margin-top: 4px;">
+                <li>در طیف فرکانسی مؤلفه‌ها، هیچ اثری از پیک تیز ۱ تا ۱.۲ هرتز (متناظر با ضربان قلب) دیده نشد.</li>
+                <li>در عوض، یک قله پهن در بازه <strong>۸ تا ۱۲ هرتز (ریتم آلفای کورتکس بینایی مغز)</strong> و دایپول‌های منظم پس‌سری دیده شد که نشان داد مدل امواج سالم مغز را به اشتباه قلب دسته‌بندی کرده است.</li>
+            </ul>
+        </div>
+        <div class="figure-container">
+            <img src="figures/s01_raw_vs_clean.png" alt="Cleaned Signal Subject 01">
+            <div class="caption">شکل ۱: نمونه مقایسه سیگنال خام در برابر سیگنال پالایش‌شده در الکترود Fp1 آزمودنی اول (s01).</div>
+        </div>
+    </section>
+
+    <!-- Section 5: Conclusion & Recommendations -->
+    <section>
+        <h2 class="section-title">۵. جمع‌بندی مهندسی و توصیه‌ها برای مطالعات آینده</h2>
+        <div class="box box-success">
+            <strong>دستاوردهای قطعی پروژه:</strong>
+            <ol style="margin-right: 18px; margin-top: 4px;">
+                <li>پایپ‌لاین کامل پردازش دسته‌ای ۳۲ آزمودنی با موفقیت مستقر شد و در زمان ۲.۴۱ دقیقه کل داده‌ها را فیلتر و ذخیره کرد.</li>
+                <li>تعداد ۳۲ فایل استاندارد دیتای تمیزشده (<span class="ltr">.fif</span>)، ۳۲ نمودار مقایسه‌ای و متاداده‌های کامل استخراج شدند.</li>
+                <li><strong>توصیه روش‌شناختی:</strong> برای استفاده معتبر از مدل ICLabel، داده‌های ورودی حتماً باید دارای نرخ نمونه‌برداری بالای ۲۰۰ هرتز (مانند دیتای خام ۵۱۲ هرتزی BioSemi با فرمت <span class="ltr">.bdf</span>) باشند تا ویژگی‌های طیفی فرکانس بالای شبکه ارضا شوند.</li>
+            </ol>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>

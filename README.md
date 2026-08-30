@@ -9,6 +9,8 @@ This directory is the corrected, publication-oriented version of the EEG/ICLabel
 - The BCI pipeline records the selected session/run, uses strict montage validation, and no longer claims an unverified GPU benchmark.
 - The four-condition controlled comparison has been executed successfully for all nine subjects (36 condition-level fits; 540 ICLabel predictions; zero failed conditions).
 - The archived final DEAP screening run has been reconciled without redistributing raw or reconstructed EEG. Its aggregate artifacts now distinguish 40 available trials from five trials used for ICA and describe all classes as ICLabel predictions.
+- The complete Baseline-to-V4 development record is now preserved under `archive/deap_history/`, including byte-identical scripts, 160 per-subject JSON reports, aggregate summaries, benchmarks, source hashes, and a reconciled five-stage comparison.
+- Four original PDFs are preserved unchanged under `archive/legacy_reports/` and explicitly marked as superseded rather than current conclusions.
 - The DEAP and BCI conclusions have been rewritten as a preprocessing-robustness case study rather than a new model, clinical validation, or proof of a universal Nyquist bug.
 
 ## Verified reconciliation of the existing BCI run
@@ -83,6 +85,24 @@ The 775 Heart Beat calls are an anomalous ICLabel prediction pattern, not confir
 
 ![Corrected DEAP screening distribution](results/deap_screening/deap_screening_distribution.png)
 
+## Historical DEAP development record
+
+The repository retains the original Baseline, V1, V2, V3, and V4 scripts so the troubleshooting sequence is auditable. The table below is rebuilt from their archived cohort CSVs and uses all seven predicted classes:
+
+| Stage | Main recorded change | ICs per subject | Heart Beat predictions |
+|---|---|---:|---:|
+| Baseline | Original mapping; actual ICA call used 10 components despite a 15-component constant | 10 | 219/320 (68.44%) |
+| V1 | Corrected channel order | 10 | 234/320 (73.13%) |
+| V2 | Downstream high-cutoff request changed from 45 to 55 Hz; confidence probe added | 10 | 233/320 (72.81%) |
+| V3 | 0.5-second trial crossfade and visual-review outputs | 15 | 372/480 (77.50%) |
+| V4 | Rank-minus-one selection; all reports recorded rank 31 | 30 | 775/960 (80.73%) |
+
+This sequence is descriptive, not a one-factor ablation study. Several settings changed, ICA was refitted independently, and component indices are not comparable across fits. The observed rise does not prove that component count caused the Heart Beat output, and the series does not establish a unique Nyquist mechanism.
+
+![Reconciled DEAP version history](results/deap_version_history/version_comparison.png)
+
+The archived scripts and PDFs retain the original development record. Their automatic-removal terminology and definitive physiological, GPU, clinical, or sampling-rate claims are superseded by the evidence-aware interpretation in this README.
+
 ## Reproduce the corrected artifacts
 
 The pipeline was tested with Python 3.10. From this directory, activate an
@@ -137,12 +157,23 @@ Run the publication-safe DEAP screening pipeline with locally authorized DEAP fi
 
 The script requires a directory containing `s01.dat` through `s32.dat`. It does not download or redistribute DEAP, and it does not automatically remove predicted components. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
 
+Rebuild the five-stage historical comparison from the versioned archive:
+
+```powershell
+& $python .\src\deap\build_version_history.py
+```
+
 ## Repository layout
 
 ```text
 final/
 ├── README.md
 ├── requirements.txt
+├── archive/
+│   ├── deap_history/
+│   ├── legacy_reports/
+│   ├── EXCLUDED_DATA_MANIFEST.csv
+│   └── SOURCE_MANIFEST.csv
 ├── src/
 │   ├── bci/
 │   ├── deap/
@@ -156,10 +187,11 @@ final/
 └── results/
     ├── controlled_experiment/
     ├── deap_screening/
+    ├── deap_version_history/
     └── summary_tables/
 ```
 
-Raw DEAP/BCI files, reconstructed FIF files, archives, credentials, and dataset caches are excluded from Git. The DEAP license restricts redistribution, so users should obtain it from the official source under its own terms.
+Raw DEAP/BCI files, reconstructed FIF files, individual signal traces/topographies, compressed archives, credentials, and dataset caches are excluded from Git. The DEAP license restricts redistribution, so users should obtain it from the official source under its own terms. The legacy PDFs are included for private historical review and should be reviewed against the DEAP EULA and the corrected conclusions before the repository is made public.
 
 No repository license has been selected yet. Add one only after deciding how the project code should be reused; a code license does not override dataset licenses.
 

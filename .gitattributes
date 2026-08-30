@@ -1,0 +1,3 @@
+# Historical snapshots are intentionally byte-identical to their local sources.
+archive/deap_history/** -text -whitespace
+archive/legacy_reports/*.html -text -whitespace

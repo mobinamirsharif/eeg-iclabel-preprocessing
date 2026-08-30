@@ -1,0 +1,104 @@
+{
+    "subject_id": "s06",
+    "total_trials_processed": 40,
+    "sampling_rate_hz": 128.0,
+    "eeg_channel_count": 32,
+    "bandpass_filter_hz": [
+        1.0,
+        45.0
+    ],
+    "referencing": "Common Average Reference (CAR)",
+    "ica_method": "Extended Infomax",
+    "total_ica_components": 10,
+    "excluded_components_count": 7,
+    "excluded_components_percentage": 70.0,
+    "excluded_component_indices": [
+        0,
+        2,
+        4,
+        6,
+        7,
+        8,
+        9
+    ],
+    "component_details": [
+        {
+            "component_index": 0,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.7734699845314026,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.7735"
+        },
+        {
+            "component_index": 1,
+            "predicted_class": "other",
+            "confidence_probability": 0.9205440282821655,
+            "excluded": false,
+            "exclusion_reason": "Retained as brain/other signal"
+        },
+        {
+            "component_index": 2,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.8598017692565918,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.8598"
+        },
+        {
+            "component_index": 3,
+            "predicted_class": "other",
+            "confidence_probability": 0.6760495901107788,
+            "excluded": false,
+            "exclusion_reason": "Retained as brain/other signal"
+        },
+        {
+            "component_index": 4,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.8904892206192017,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.8905"
+        },
+        {
+            "component_index": 5,
+            "predicted_class": "other",
+            "confidence_probability": 0.7849241495132446,
+            "excluded": false,
+            "exclusion_reason": "Retained as brain/other signal"
+        },
+        {
+            "component_index": 6,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.8439539670944214,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.8440"
+        },
+        {
+            "component_index": 7,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.5994391441345215,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.5994"
+        },
+        {
+            "component_index": 8,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.49871325492858887,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.4987"
+        },
+        {
+            "component_index": 9,
+            "predicted_class": "heart beat",
+            "confidence_probability": 0.908431887626648,
+            "excluded": true,
+            "exclusion_reason": "Classified as heart beat with probability 0.9084"
+        }
+    ],
+    "hardware": {
+        "execution_device": "CPU (MNE-Python / PyTorch ICLabel backend)",
+        "processing_time_seconds": 3.9061
+    },
+    "output_files": {
+        "cleaned_eeg_fif": "ICLabel_DEAP_Results\\cleaned_data\\deap_s06_cleaned.fif",
+        "comparison_figure": "ICLabel_DEAP_Results\\figures\\s06_raw_vs_clean.png"
+    }
+}
