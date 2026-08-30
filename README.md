@@ -8,6 +8,7 @@ This directory is the corrected, publication-oriented version of the EEG/ICLabel
 - The cohort table and dashboard now include all seven ICLabel classes.
 - The BCI pipeline records the selected session/run, uses strict montage validation, and no longer claims an unverified GPU benchmark.
 - The four-condition controlled comparison has been executed successfully for all nine subjects (36 condition-level fits; 540 ICLabel predictions; zero failed conditions).
+- The archived final DEAP screening run has been reconciled without redistributing raw or reconstructed EEG. Its aggregate artifacts now distinguish 40 available trials from five trials used for ICA and describe all classes as ICLabel predictions.
 - The DEAP and BCI conclusions have been rewritten as a preprocessing-robustness case study rather than a new model, clinical validation, or proof of a universal Nyquist bug.
 
 ## Verified reconciliation of the existing BCI run
@@ -64,6 +65,24 @@ The clean sampling-rate contrast (B vs D, both 4–45 Hz) was similar at the agg
 
 ![Controlled four-condition distribution](results/controlled_experiment/aggregate_condition_distribution.png)
 
+## Reconciled DEAP screening run
+
+The archived `ICLabel_DEAP_final.py` run evaluated 32 subjects with 30 ICA components per subject. It had 40 trials available for each subject but used five trials per subject for ICA. The corrected aggregate accounting therefore reports 1,280 trials available and 160 trials used—not 1,280 trials processed by ICA.
+
+| ICLabel predicted class | Count | Percentage of 960 ICs |
+|---|---:|---:|
+| Brain | 29 | 3.02% |
+| Muscle | 15 | 1.56% |
+| Eye Blink | 8 | 0.83% |
+| Heart Beat | 775 | 80.73% |
+| Line Noise | 0 | 0.00% |
+| Channel Noise | 7 | 0.73% |
+| Other | 126 | 13.13% |
+
+The 775 Heart Beat calls are an anomalous ICLabel prediction pattern, not confirmation that 775 components were cardiac artifacts. Only the first 32 EEG channels were supplied to ICLabel; no ECG or plethysmography reference channel was supplied. The publication-safe pipeline reports predictions and probabilities but does not automatically reconstruct or publish “cleaned” EEG.
+
+![Corrected DEAP screening distribution](results/deap_screening/deap_screening_distribution.png)
+
 ## Reproduce the corrected artifacts
 
 The pipeline was tested with Python 3.10. From this directory, activate an
@@ -108,6 +127,16 @@ For a one-subject smoke run:
 & $python .\src\controlled_experiment\run_controlled_experiment.py --subjects 1
 ```
 
+Run the publication-safe DEAP screening pipeline with locally authorized DEAP files:
+
+```powershell
+& $python .\src\deap\run_deap_screening_pipeline.py `
+  --data-dir '<PATH_TO_AUTHORIZED_DEAP_FILES>' `
+  --max-trials 5
+```
+
+The script requires a directory containing `s01.dat` through `s32.dat`. It does not download or redistribute DEAP, and it does not automatically remove predicted components. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
+
 ## Repository layout
 
 ```text
@@ -116,6 +145,7 @@ final/
 ├── requirements.txt
 ├── src/
 │   ├── bci/
+│   ├── deap/
 │   └── controlled_experiment/
 ├── docs/
 │   └── methodology.md
@@ -124,6 +154,8 @@ final/
 │   └── troubleshooting.md
 ├── figures/
 └── results/
+    ├── controlled_experiment/
+    ├── deap_screening/
     └── summary_tables/
 ```
 
@@ -136,7 +168,7 @@ No repository license has been selected yet. Add one only after deciding how the
 - MNE-ICALabel documents ICLabel as designed around extended Infomax ICA, common-average reference, and 1–100 Hz filtered EEG. It also states that the model can run outside those specifications and that the preprocessing effects were not established in the original ICLabel paper.
 - The preprocessed DEAP package is 128 Hz and bandwidth-limited; increasing a later software filter cutoff cannot restore frequencies already removed upstream.
 - The existing BCI comparison shows that the unusual DEAP Heart Beat pattern did not repeat in the selected 250 Hz BCI recordings. It does not by itself prove that sampling rate alone caused the DEAP behavior.
-- A defensible current conclusion is that the DEAP anomaly is consistent with a broader preprocessing/data mismatch and requires the controlled comparison before stronger causal language is used.
+- The completed controlled BCI comparison found very similar aggregate distributions at 250 Hz and 128 Hz under the shared 4–45 Hz passband. A defensible conclusion is therefore that the DEAP anomaly is data/preprocessing dependent and is not explained by sampling rate alone.
 
 ## Primary references
 

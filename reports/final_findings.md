@@ -10,6 +10,8 @@
 6. The controlled comparison completed all 36 subject/condition fits and produced 540 ICLabel predictions with no failed conditions.
 7. With a shared 4–45 Hz passband, the aggregate distributions at 250 Hz and 128 Hz were similar: Brain was 76.30% and 75.56%, respectively.
 8. Changing the passband produced larger aggregate shifts than changing sampling rate in the clean B-vs-D contrast. In particular, Line Noise predictions fell from 17.04% to 2.96% at 250 Hz and from 17.04% to 3.70% at 128 Hz when moving to 4–45 Hz.
+9. The archived final DEAP screening run used five of 40 available trials per subject, 32 subjects, and 30 ICA components per subject, yielding 960 predictions in total.
+10. That DEAP screening run produced 775 Heart Beat predictions (80.73%), 29 Brain predictions (3.02%), and 156 predictions across the remaining five classes. No cardiac reference channel was supplied to ICLabel.
 
 ## Corrected BCI statement
 
@@ -19,7 +21,7 @@ This statement reports model outputs. It is not a ground-truth estimate of the p
 
 ## Corrected DEAP statement
 
-> ICLabel showed an unusual Heart Beat prediction pattern on the preprocessed DEAP package used in this project. The package’s sampling rate and bandwidth differ from ICLabel’s documented design context, and the pattern was absent from the selected 250 Hz BCI recordings. The evidence is consistent with a preprocessing/data mismatch, but it does not isolate sampling rate as the sole cause.
+> In an archived screening run using five of 40 available trials for each of 32 DEAP subjects, ICLabel assigned 775 of 960 ICA components (80.73%) to Heart Beat. Only 32 EEG channels were supplied to ICLabel, with no ECG or plethysmography reference. This is an anomalous prediction distribution requiring validation; it is not evidence that 775 components were confirmed cardiac artifacts. The completed controlled BCI comparison does not support sampling rate alone as the explanation.
 
 ## Controlled-comparison statement
 
@@ -33,6 +35,8 @@ The result is specific to these recordings and this pipeline. ICA was refitted u
 - “The model’s 1–100 Hz range was 100% filled with real signal” — not an appropriate inference from sampling rate alone.
 - “ICLabel is invalid below 200 Hz” — not stated by MNE-ICALabel documentation.
 - “All 40 DEAP trials per subject were used for ICA” — the initial code used five.
+- “1,280 DEAP trials were processed by ICA” — 1,280 were available, while 160 were used in the archived final screening run.
+- “805 DEAP components were confirmed artifacts and removed successfully” — these were argmax policy calls, not ground-truth artifact labels.
 - “All recordings for all nine BCI subjects were processed” — the archived code selected the first session/run only.
 - “GPU benchmark” for the BCI pipeline — no GPU was explicitly selected or measured there.
 - “Pure brain signal” and “confirmed noise” — replaced with ICLabel prediction terminology.
@@ -41,6 +45,10 @@ The result is specific to these recordings and this pipeline. ICA was refitted u
 ## Completed controlled experiment
 
 The four-condition comparison has now been executed for subjects 1–9 using session index 0 and run index 0. Outputs are stored in `results/controlled_experiment/`: `condition_summary.csv`, `component_predictions.csv`, `experiment_metadata.json`, and `aggregate_condition_distribution.png`. The metadata records the cache, selection rule, random seed, ICA configuration, condition definitions, limitations, and zero failures.
+
+## Reconciled DEAP screening artifacts
+
+The publication-safe DEAP artifacts are stored in `results/deap_screening/`. They include a corrected subject summary, a Heart Beat probability table, metadata, and a cohort distribution figure. The original `.fif` files, individual raw-versus-reconstructed traces, and subject topographies are intentionally not redistributed.
 
 ## Publication framing
 

@@ -14,6 +14,11 @@ data/
 *.rar
 *.zip
 
+# DEAP participant-level derived signal artifacts
+**/cleaned_data/
+**/heartbeat_topographies/
+**/*_raw_vs_clean*.png
+
 # Local caches
 .mne/
 .moabb/

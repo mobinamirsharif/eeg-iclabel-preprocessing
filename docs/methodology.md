@@ -68,6 +68,12 @@ The existing DEAP scripts operate on a preprocessed package at 128 Hz. In the ar
 
 Increasing a downstream filter cutoff from 45 to 55 Hz cannot restore spectral content removed by upstream preprocessing. V2 is therefore treated as a software-cutoff/confidence probe, not restoration of a 45–55 Hz band.
 
+The later archived `ICLabel_DEAP_final.py` run used a corrected 32-channel order and 30 ICA components per subject, but still used five trials per subject for ICA. Its old aggregate metadata summed the 40 available trials per subject and called 1,280 trials “processed.” The reconciled metadata separates 1,280 available trials from 160 trials actually supplied to ICA.
+
+Across 960 ICA components, that screening run produced 775 Heart Beat predictions (80.73%). This is reported as an anomalous model-output distribution. The pipeline supplied only 32 EEG channels to ICLabel and did not supply ECG or plethysmography, so these calls cannot be verified as cardiac artifacts from the available ICLabel output alone.
+
+`src/deap/run_deap_screening_pipeline.py` preserves the explicit five-trial screening configuration by default, records available and used trials separately, reports all seven classes, and performs no automatic component removal. The reconciled aggregate artifacts exclude FIF files, raw/cleaned signal traces, and individual participant topographies.
+
 ## Data and reproducibility policy
 
-Raw/licensed EEG data are not distributed in this repository. Scripts obtain BNCI2014_001 through MOABB and users must obtain DEAP under the official EULA. Summary tables and figures may be versioned when they contain no redistributed raw signals or identifying data.
+Raw/licensed EEG data are not distributed in this repository. Scripts obtain BNCI2014_001 through MOABB and users must obtain DEAP under the official EULA. Only aggregate DEAP prediction tables, probabilities, metadata, and a cohort figure are versioned; reconstructed FIF files and individual signal traces are excluded.

@@ -33,6 +33,12 @@ The unusual DEAP Heart Beat pattern was absent in the nine selected BCI recordin
 
 The BCI subject reports contained all seven ICLabel classes, but the cohort CSV and donut chart omitted Channel Noise and Other. Thirteen Other components disappeared from the chart denominator. Reconciliation restored the full total of 135 ICs and changed the Brain percentage from 72.1% to 65.2%.
 
-## 8. Controlled comparison prepared
+## 8. Controlled comparison completed
 
-The final script defines four conditions and compares distributions at subject/condition level. It explicitly avoids direct pairing of component indices across separate ICA fits and records failures rather than silently dropping them.
+The four-condition script completed 36 subject/condition fits with no failures. With a shared 4–45 Hz passband, the aggregate Brain proportions were 76.30% at 250 Hz and 75.56% at 128 Hz. The larger observed shifts followed passband changes, so the run does not support a general claim that 128 Hz alone causes ICLabel collapse.
+
+## 9. Archived final DEAP run reconciled
+
+The later DEAP screening output contained 960 predictions, including 775 Heart Beat calls. Its metadata counted all 40 available trials per subject as processed even though the ICA input used five trials per subject. Reconciliation now reports 1,280 trials available and 160 trials used for ICA, retains all seven classes, and replaces “confirmed artifact removal” terminology with ICLabel prediction and artifact-policy terminology.
+
+The publication-safe repository includes the corrected aggregate outputs and a non-destructive screening pipeline. It excludes reconstructed FIF files, individual signal traces, participant topographies, and licensed raw data.

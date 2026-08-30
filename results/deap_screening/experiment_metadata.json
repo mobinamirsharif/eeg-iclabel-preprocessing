@@ -1,0 +1,76 @@
+{
+  "dataset": "DEAP preprocessed Python package",
+  "run_type": "archived screening run; reconciled reporting",
+  "subjects_evaluated": 32,
+  "successful_subjects": 32,
+  "available_trials_per_subject": [
+    40
+  ],
+  "trials_used_for_ica_per_subject": 5,
+  "total_trials_available": 1280,
+  "total_trials_used_for_ica": 160,
+  "eeg_channels_supplied_to_iclabel": 32,
+  "peripheral_channels_supplied_to_iclabel": 0,
+  "sampling_rate_hz": 128.0,
+  "passband_hz": [
+    1.0,
+    55.0
+  ],
+  "ica_method": "Extended Infomax",
+  "total_ica_components": 960,
+  "artifact_policy": {
+    "definition": "argmax prediction in Muscle, Eye Blink, Heart Beat, Line Noise, or Channel Noise",
+    "prediction_count": 805,
+    "prediction_percentage": 83.85,
+    "note": "Policy calls are not confirmed artifacts and do not validate automatic removal."
+  },
+  "class_distribution": {
+    "brain": {
+      "count": 29,
+      "percentage": 3.02
+    },
+    "muscle": {
+      "count": 15,
+      "percentage": 1.56
+    },
+    "eye_blink": {
+      "count": 8,
+      "percentage": 0.83
+    },
+    "heart_beat": {
+      "count": 775,
+      "percentage": 80.73
+    },
+    "line_noise": {
+      "count": 0,
+      "percentage": 0.0
+    },
+    "channel_noise": {
+      "count": 7,
+      "percentage": 0.73
+    },
+    "other": {
+      "count": 126,
+      "percentage": 13.13
+    }
+  },
+  "heart_beat_probability_probe": {
+    "total_heart_beat_predictions": 775,
+    "mean_argmax_probability": 0.8301,
+    "predictions_below_0.5": 27,
+    "predictions_at_or_above_0.8": 504
+  },
+  "runtime": {
+    "execution_device_reported": "CPU",
+    "total_subject_runtime_seconds": 360.1181,
+    "mean_subject_runtime_seconds": 11.2537
+  },
+  "limitations": [
+    "ICLabel outputs are model predictions, not component ground truth.",
+    "Only five of 40 available trials per subject were used for ICA in this archived run.",
+    "The 32 EEG channels were supplied to ICLabel; no ECG or plethysmography reference was supplied.",
+    "The source package was already preprocessed before this project received it.",
+    "The high Heart Beat prediction proportion is an anomaly requiring validation, not proof of cardiac contamination.",
+    "No cleaned EEG files or individual signal traces are redistributed with these aggregate artifacts."
+  ]
+}
