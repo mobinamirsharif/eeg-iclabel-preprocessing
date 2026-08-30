@@ -266,6 +266,14 @@ No repository license has been selected yet. Evaluate a standard code license su
 - The existing BCI comparison shows that the unusual DEAP Heart Beat pattern did not repeat in the selected 250 Hz BCI recordings. It does not by itself prove that sampling rate alone caused the DEAP behavior.
 - The completed controlled BCI comparison found very similar aggregate distributions at 250 Hz and 128 Hz under the shared 4–45 Hz passband. A defensible conclusion is therefore that the DEAP anomaly is data/preprocessing dependent and is not explained by sampling rate alone.
 
+## Limitations and future work
+
+A direct replication of the four-condition sampling-rate experiment on DEAP cannot be performed with the available `data_preprocessed_python` package. These signals have already been downsampled to 128 Hz and preprocessed upstream. Upsampling such data would increase the sample count but would not recover spectral information removed by the earlier downsampling and band-limiting steps.
+
+Therefore, the current repository does not make a direct causal inference about the effect of sampling rate on the DEAP anomaly. A valid DEAP sampling-rate comparison would require the original raw recordings and a controlled preprocessing pipeline that derives the compared sampling rates from the same raw acquisition. The raw DEAP recordings are not redistributed in this repository because of the dataset license.
+
+Potential follow-up analyses using the available preprocessed package can evaluate sensitivity to accessible processing choices, such as trial-boundary crossfade, number of trials used for ICA, ICA dimensionality, and further restriction of the available frequency range. Such analyses would assess preprocessing sensitivity, not the effect of sampling rate itself.
+
 ## Primary references
 
 - [MNE-ICALabel: automatic ICLabel example](https://mne.tools/mne-icalabel/stable/generated/examples/00_iclabel.html)
