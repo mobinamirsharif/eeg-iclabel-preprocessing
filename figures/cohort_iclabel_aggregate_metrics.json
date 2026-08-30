@@ -1,0 +1,12 @@
+{
+  "subjects": 9,
+  "recordings": 9,
+  "total_ics": 135,
+  "brain": 88,
+  "brain_percent": 65.19,
+  "artifacts": 34,
+  "artifacts_percent": 25.19,
+  "other": 13,
+  "other_percent": 9.63,
+  "mean_runtime_seconds": 30.211
+}

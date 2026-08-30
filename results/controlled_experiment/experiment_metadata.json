@@ -1,0 +1,66 @@
+{
+  "dataset": "BCI Competition IV Dataset 2a / BNCI2014_001",
+  "data_cache": "~/mne_data",
+  "subjects_requested": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "recording_selection": {
+    "session_index": 0,
+    "run_index": 0,
+    "note": "The same selected recording is reused across all four conditions for each subject."
+  },
+  "random_seed": 42,
+  "ica_method": "extended infomax",
+  "requested_ica_components": 15,
+  "conditions": [
+    {
+      "code": "A_250Hz_1-100Hz",
+      "sampling_rate_hz": 250.0,
+      "low_freq_hz": 1.0,
+      "high_freq_hz": 100.0,
+      "purpose": "BCI/ICLabel-oriented baseline"
+    },
+    {
+      "code": "B_250Hz_4-45Hz",
+      "sampling_rate_hz": 250.0,
+      "low_freq_hz": 4.0,
+      "high_freq_hz": 45.0,
+      "purpose": "DEAP-like passband at original sampling rate"
+    },
+    {
+      "code": "C_128Hz_1-63Hz",
+      "sampling_rate_hz": 128.0,
+      "low_freq_hz": 1.0,
+      "high_freq_hz": 63.0,
+      "purpose": "128 Hz with a Nyquist-limited passband"
+    },
+    {
+      "code": "D_128Hz_4-45Hz",
+      "sampling_rate_hz": 128.0,
+      "low_freq_hz": 4.0,
+      "high_freq_hz": 45.0,
+      "purpose": "DEAP-like sampling rate and passband"
+    }
+  ],
+  "valid_pairwise_interpretations": {
+    "A_vs_B": "passband/preprocessing change at 250 Hz",
+    "B_vs_D": "sampling-rate change with a shared 4-45 Hz passband",
+    "C_vs_D": "passband change at 128 Hz",
+    "A_vs_C": "descriptive only; sampling rate and feasible upper bandwidth differ"
+  },
+  "limitations": [
+    "ICLabel outputs are model predictions, not component ground truth.",
+    "ICA is refit per condition, so component indices are not paired across conditions.",
+    "The source BCI recordings were acquired with their original hardware filters and notch filtering.",
+    "This comparison cannot by itself establish a universal causal sampling-rate requirement for ICLabel."
+  ],
+  "failures": []
+}

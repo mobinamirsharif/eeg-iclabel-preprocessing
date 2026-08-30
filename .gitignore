@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.venv/
+.idea/
+.vscode/
+
+# Raw/licensed EEG data and large binary derivatives
+data/
+*.dat
+*.bdf
+*.gdf
+*.fif
+*.mat
+*.rar
+*.zip
+
+# Local caches
+.mne/
+.moabb/
+
+# Local smoke-test artifacts
+results/controlled_experiment_smoke*/

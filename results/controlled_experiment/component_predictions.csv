@@ -1,0 +1,541 @@
+Subject,Session,Run,Condition,Component Index (within condition only),Predicted Label,Predicted Class Probability
+sub-01,0train,0,A_250Hz_1-100Hz,0,brain,0.990638
+sub-01,0train,0,A_250Hz_1-100Hz,1,brain,0.999759
+sub-01,0train,0,A_250Hz_1-100Hz,2,brain,0.998123
+sub-01,0train,0,A_250Hz_1-100Hz,3,eye blink,0.746124
+sub-01,0train,0,A_250Hz_1-100Hz,4,brain,0.997396
+sub-01,0train,0,A_250Hz_1-100Hz,5,brain,0.97929
+sub-01,0train,0,A_250Hz_1-100Hz,6,brain,0.877701
+sub-01,0train,0,A_250Hz_1-100Hz,7,brain,0.936878
+sub-01,0train,0,A_250Hz_1-100Hz,8,brain,0.847542
+sub-01,0train,0,A_250Hz_1-100Hz,9,brain,0.942033
+sub-01,0train,0,A_250Hz_1-100Hz,10,other,0.727895
+sub-01,0train,0,A_250Hz_1-100Hz,11,line noise,0.6501
+sub-01,0train,0,A_250Hz_1-100Hz,12,brain,0.952325
+sub-01,0train,0,A_250Hz_1-100Hz,13,brain,0.581665
+sub-01,0train,0,A_250Hz_1-100Hz,14,brain,0.96929
+sub-01,0train,0,B_250Hz_4-45Hz,0,brain,0.673493
+sub-01,0train,0,B_250Hz_4-45Hz,1,brain,0.958993
+sub-01,0train,0,B_250Hz_4-45Hz,2,brain,0.957703
+sub-01,0train,0,B_250Hz_4-45Hz,3,brain,0.52777
+sub-01,0train,0,B_250Hz_4-45Hz,4,brain,0.887427
+sub-01,0train,0,B_250Hz_4-45Hz,5,heart beat,0.604573
+sub-01,0train,0,B_250Hz_4-45Hz,6,brain,0.95735
+sub-01,0train,0,B_250Hz_4-45Hz,7,brain,0.857926
+sub-01,0train,0,B_250Hz_4-45Hz,8,eye blink,0.764866
+sub-01,0train,0,B_250Hz_4-45Hz,9,brain,0.923563
+sub-01,0train,0,B_250Hz_4-45Hz,10,brain,0.86394
+sub-01,0train,0,B_250Hz_4-45Hz,11,brain,0.836678
+sub-01,0train,0,B_250Hz_4-45Hz,12,other,0.508076
+sub-01,0train,0,B_250Hz_4-45Hz,13,other,0.357799
+sub-01,0train,0,B_250Hz_4-45Hz,14,brain,0.75842
+sub-01,0train,0,C_128Hz_1-63Hz,0,brain,0.999807
+sub-01,0train,0,C_128Hz_1-63Hz,1,brain,0.997117
+sub-01,0train,0,C_128Hz_1-63Hz,2,brain,0.991168
+sub-01,0train,0,C_128Hz_1-63Hz,3,eye blink,0.798112
+sub-01,0train,0,C_128Hz_1-63Hz,4,brain,0.973709
+sub-01,0train,0,C_128Hz_1-63Hz,5,brain,0.999307
+sub-01,0train,0,C_128Hz_1-63Hz,6,brain,0.821861
+sub-01,0train,0,C_128Hz_1-63Hz,7,brain,0.984505
+sub-01,0train,0,C_128Hz_1-63Hz,8,line noise,0.692582
+sub-01,0train,0,C_128Hz_1-63Hz,9,other,0.720261
+sub-01,0train,0,C_128Hz_1-63Hz,10,brain,0.967025
+sub-01,0train,0,C_128Hz_1-63Hz,11,other,0.665392
+sub-01,0train,0,C_128Hz_1-63Hz,12,brain,0.493791
+sub-01,0train,0,C_128Hz_1-63Hz,13,brain,0.948268
+sub-01,0train,0,C_128Hz_1-63Hz,14,brain,0.752711
+sub-01,0train,0,D_128Hz_4-45Hz,0,brain,0.942511
+sub-01,0train,0,D_128Hz_4-45Hz,1,brain,0.644103
+sub-01,0train,0,D_128Hz_4-45Hz,2,brain,0.956275
+sub-01,0train,0,D_128Hz_4-45Hz,3,brain,0.670361
+sub-01,0train,0,D_128Hz_4-45Hz,4,brain,0.925462
+sub-01,0train,0,D_128Hz_4-45Hz,5,heart beat,0.480894
+sub-01,0train,0,D_128Hz_4-45Hz,6,brain,0.861334
+sub-01,0train,0,D_128Hz_4-45Hz,7,brain,0.862886
+sub-01,0train,0,D_128Hz_4-45Hz,8,brain,0.950795
+sub-01,0train,0,D_128Hz_4-45Hz,9,eye blink,0.809289
+sub-01,0train,0,D_128Hz_4-45Hz,10,brain,0.924453
+sub-01,0train,0,D_128Hz_4-45Hz,11,other,0.46776
+sub-01,0train,0,D_128Hz_4-45Hz,12,brain,0.803931
+sub-01,0train,0,D_128Hz_4-45Hz,13,brain,0.658074
+sub-01,0train,0,D_128Hz_4-45Hz,14,other,0.5337
+sub-02,0train,0,A_250Hz_1-100Hz,0,eye blink,0.878291
+sub-02,0train,0,A_250Hz_1-100Hz,1,brain,0.953483
+sub-02,0train,0,A_250Hz_1-100Hz,2,brain,0.956787
+sub-02,0train,0,A_250Hz_1-100Hz,3,brain,0.939485
+sub-02,0train,0,A_250Hz_1-100Hz,4,brain,0.78293
+sub-02,0train,0,A_250Hz_1-100Hz,5,brain,0.979344
+sub-02,0train,0,A_250Hz_1-100Hz,6,brain,0.680261
+sub-02,0train,0,A_250Hz_1-100Hz,7,brain,0.984102
+sub-02,0train,0,A_250Hz_1-100Hz,8,brain,0.806011
+sub-02,0train,0,A_250Hz_1-100Hz,9,line noise,0.981387
+sub-02,0train,0,A_250Hz_1-100Hz,10,other,0.773102
+sub-02,0train,0,A_250Hz_1-100Hz,11,other,0.670878
+sub-02,0train,0,A_250Hz_1-100Hz,12,line noise,0.84016
+sub-02,0train,0,A_250Hz_1-100Hz,13,line noise,0.414566
+sub-02,0train,0,A_250Hz_1-100Hz,14,line noise,0.980957
+sub-02,0train,0,B_250Hz_4-45Hz,0,brain,0.930206
+sub-02,0train,0,B_250Hz_4-45Hz,1,eye blink,0.653878
+sub-02,0train,0,B_250Hz_4-45Hz,2,brain,0.855869
+sub-02,0train,0,B_250Hz_4-45Hz,3,brain,0.826384
+sub-02,0train,0,B_250Hz_4-45Hz,4,heart beat,0.473701
+sub-02,0train,0,B_250Hz_4-45Hz,5,brain,0.822454
+sub-02,0train,0,B_250Hz_4-45Hz,6,brain,0.72193
+sub-02,0train,0,B_250Hz_4-45Hz,7,brain,0.973243
+sub-02,0train,0,B_250Hz_4-45Hz,8,brain,0.898341
+sub-02,0train,0,B_250Hz_4-45Hz,9,heart beat,0.332752
+sub-02,0train,0,B_250Hz_4-45Hz,10,other,0.455285
+sub-02,0train,0,B_250Hz_4-45Hz,11,brain,0.925021
+sub-02,0train,0,B_250Hz_4-45Hz,12,heart beat,0.380237
+sub-02,0train,0,B_250Hz_4-45Hz,13,brain,0.812331
+sub-02,0train,0,B_250Hz_4-45Hz,14,heart beat,0.655657
+sub-02,0train,0,C_128Hz_1-63Hz,0,eye blink,0.945565
+sub-02,0train,0,C_128Hz_1-63Hz,1,brain,0.575769
+sub-02,0train,0,C_128Hz_1-63Hz,2,brain,0.942245
+sub-02,0train,0,C_128Hz_1-63Hz,3,line noise,0.550703
+sub-02,0train,0,C_128Hz_1-63Hz,4,brain,0.672246
+sub-02,0train,0,C_128Hz_1-63Hz,5,brain,0.94569
+sub-02,0train,0,C_128Hz_1-63Hz,6,brain,0.99219
+sub-02,0train,0,C_128Hz_1-63Hz,7,brain,0.961693
+sub-02,0train,0,C_128Hz_1-63Hz,8,brain,0.799964
+sub-02,0train,0,C_128Hz_1-63Hz,9,line noise,0.744578
+sub-02,0train,0,C_128Hz_1-63Hz,10,line noise,0.918665
+sub-02,0train,0,C_128Hz_1-63Hz,11,other,0.769434
+sub-02,0train,0,C_128Hz_1-63Hz,12,other,0.595569
+sub-02,0train,0,C_128Hz_1-63Hz,13,line noise,0.901419
+sub-02,0train,0,C_128Hz_1-63Hz,14,line noise,0.779499
+sub-02,0train,0,D_128Hz_4-45Hz,0,brain,0.674
+sub-02,0train,0,D_128Hz_4-45Hz,1,eye blink,0.680752
+sub-02,0train,0,D_128Hz_4-45Hz,2,brain,0.739373
+sub-02,0train,0,D_128Hz_4-45Hz,3,brain,0.571995
+sub-02,0train,0,D_128Hz_4-45Hz,4,brain,0.926462
+sub-02,0train,0,D_128Hz_4-45Hz,5,brain,0.918864
+sub-02,0train,0,D_128Hz_4-45Hz,6,brain,0.594308
+sub-02,0train,0,D_128Hz_4-45Hz,7,brain,0.538254
+sub-02,0train,0,D_128Hz_4-45Hz,8,brain,0.693793
+sub-02,0train,0,D_128Hz_4-45Hz,9,brain,0.942056
+sub-02,0train,0,D_128Hz_4-45Hz,10,muscle artifact,0.507998
+sub-02,0train,0,D_128Hz_4-45Hz,11,heart beat,0.471064
+sub-02,0train,0,D_128Hz_4-45Hz,12,brain,0.697452
+sub-02,0train,0,D_128Hz_4-45Hz,13,other,0.481824
+sub-02,0train,0,D_128Hz_4-45Hz,14,brain,0.757418
+sub-03,0train,0,A_250Hz_1-100Hz,0,brain,0.991406
+sub-03,0train,0,A_250Hz_1-100Hz,1,eye blink,0.51421
+sub-03,0train,0,A_250Hz_1-100Hz,2,brain,0.990222
+sub-03,0train,0,A_250Hz_1-100Hz,3,brain,0.980889
+sub-03,0train,0,A_250Hz_1-100Hz,4,brain,0.537569
+sub-03,0train,0,A_250Hz_1-100Hz,5,brain,0.997021
+sub-03,0train,0,A_250Hz_1-100Hz,6,brain,0.903326
+sub-03,0train,0,A_250Hz_1-100Hz,7,brain,0.713541
+sub-03,0train,0,A_250Hz_1-100Hz,8,brain,0.956286
+sub-03,0train,0,A_250Hz_1-100Hz,9,brain,0.747892
+sub-03,0train,0,A_250Hz_1-100Hz,10,brain,0.5927
+sub-03,0train,0,A_250Hz_1-100Hz,11,muscle artifact,0.866121
+sub-03,0train,0,A_250Hz_1-100Hz,12,line noise,0.773274
+sub-03,0train,0,A_250Hz_1-100Hz,13,other,0.461585
+sub-03,0train,0,A_250Hz_1-100Hz,14,line noise,0.556654
+sub-03,0train,0,B_250Hz_4-45Hz,0,brain,0.939097
+sub-03,0train,0,B_250Hz_4-45Hz,1,brain,0.987043
+sub-03,0train,0,B_250Hz_4-45Hz,2,brain,0.928761
+sub-03,0train,0,B_250Hz_4-45Hz,3,brain,0.379431
+sub-03,0train,0,B_250Hz_4-45Hz,4,brain,0.922611
+sub-03,0train,0,B_250Hz_4-45Hz,5,brain,0.974981
+sub-03,0train,0,B_250Hz_4-45Hz,6,brain,0.872587
+sub-03,0train,0,B_250Hz_4-45Hz,7,brain,0.895841
+sub-03,0train,0,B_250Hz_4-45Hz,8,eye blink,0.881225
+sub-03,0train,0,B_250Hz_4-45Hz,9,brain,0.928869
+sub-03,0train,0,B_250Hz_4-45Hz,10,eye blink,0.596656
+sub-03,0train,0,B_250Hz_4-45Hz,11,brain,0.651343
+sub-03,0train,0,B_250Hz_4-45Hz,12,brain,0.443423
+sub-03,0train,0,B_250Hz_4-45Hz,13,brain,0.402524
+sub-03,0train,0,B_250Hz_4-45Hz,14,muscle artifact,0.575252
+sub-03,0train,0,C_128Hz_1-63Hz,0,brain,0.992763
+sub-03,0train,0,C_128Hz_1-63Hz,1,eye blink,0.556688
+sub-03,0train,0,C_128Hz_1-63Hz,2,brain,0.900124
+sub-03,0train,0,C_128Hz_1-63Hz,3,brain,0.972027
+sub-03,0train,0,C_128Hz_1-63Hz,4,brain,0.997367
+sub-03,0train,0,C_128Hz_1-63Hz,5,brain,0.902689
+sub-03,0train,0,C_128Hz_1-63Hz,6,brain,0.737103
+sub-03,0train,0,C_128Hz_1-63Hz,7,brain,0.630614
+sub-03,0train,0,C_128Hz_1-63Hz,8,brain,0.476991
+sub-03,0train,0,C_128Hz_1-63Hz,9,line noise,0.887059
+sub-03,0train,0,C_128Hz_1-63Hz,10,brain,0.660367
+sub-03,0train,0,C_128Hz_1-63Hz,11,brain,0.967464
+sub-03,0train,0,C_128Hz_1-63Hz,12,brain,0.51623
+sub-03,0train,0,C_128Hz_1-63Hz,13,line noise,0.76943
+sub-03,0train,0,C_128Hz_1-63Hz,14,brain,0.509283
+sub-03,0train,0,D_128Hz_4-45Hz,0,brain,0.989404
+sub-03,0train,0,D_128Hz_4-45Hz,1,brain,0.946477
+sub-03,0train,0,D_128Hz_4-45Hz,2,brain,0.56353
+sub-03,0train,0,D_128Hz_4-45Hz,3,brain,0.978097
+sub-03,0train,0,D_128Hz_4-45Hz,4,brain,0.867342
+sub-03,0train,0,D_128Hz_4-45Hz,5,brain,0.908729
+sub-03,0train,0,D_128Hz_4-45Hz,6,brain,0.898553
+sub-03,0train,0,D_128Hz_4-45Hz,7,brain,0.811005
+sub-03,0train,0,D_128Hz_4-45Hz,8,eye blink,0.642928
+sub-03,0train,0,D_128Hz_4-45Hz,9,eye blink,0.880642
+sub-03,0train,0,D_128Hz_4-45Hz,10,brain,0.926085
+sub-03,0train,0,D_128Hz_4-45Hz,11,brain,0.368072
+sub-03,0train,0,D_128Hz_4-45Hz,12,brain,0.375775
+sub-03,0train,0,D_128Hz_4-45Hz,13,line noise,0.49319
+sub-03,0train,0,D_128Hz_4-45Hz,14,muscle artifact,0.595014
+sub-04,0train,0,A_250Hz_1-100Hz,0,brain,0.993039
+sub-04,0train,0,A_250Hz_1-100Hz,1,brain,0.981749
+sub-04,0train,0,A_250Hz_1-100Hz,2,brain,0.987329
+sub-04,0train,0,A_250Hz_1-100Hz,3,brain,0.922948
+sub-04,0train,0,A_250Hz_1-100Hz,4,brain,0.933012
+sub-04,0train,0,A_250Hz_1-100Hz,5,eye blink,0.775281
+sub-04,0train,0,A_250Hz_1-100Hz,6,brain,0.993264
+sub-04,0train,0,A_250Hz_1-100Hz,7,brain,0.993194
+sub-04,0train,0,A_250Hz_1-100Hz,8,other,0.931739
+sub-04,0train,0,A_250Hz_1-100Hz,9,brain,0.912823
+sub-04,0train,0,A_250Hz_1-100Hz,10,line noise,0.996524
+sub-04,0train,0,A_250Hz_1-100Hz,11,brain,0.958439
+sub-04,0train,0,A_250Hz_1-100Hz,12,line noise,0.819032
+sub-04,0train,0,A_250Hz_1-100Hz,13,line noise,0.416707
+sub-04,0train,0,A_250Hz_1-100Hz,14,brain,0.8501
+sub-04,0train,0,B_250Hz_4-45Hz,0,heart beat,0.478829
+sub-04,0train,0,B_250Hz_4-45Hz,1,brain,0.869665
+sub-04,0train,0,B_250Hz_4-45Hz,2,brain,0.831137
+sub-04,0train,0,B_250Hz_4-45Hz,3,brain,0.959572
+sub-04,0train,0,B_250Hz_4-45Hz,4,brain,0.894057
+sub-04,0train,0,B_250Hz_4-45Hz,5,brain,0.664769
+sub-04,0train,0,B_250Hz_4-45Hz,6,brain,0.946272
+sub-04,0train,0,B_250Hz_4-45Hz,7,eye blink,0.622081
+sub-04,0train,0,B_250Hz_4-45Hz,8,brain,0.973933
+sub-04,0train,0,B_250Hz_4-45Hz,9,brain,0.674383
+sub-04,0train,0,B_250Hz_4-45Hz,10,other,0.777695
+sub-04,0train,0,B_250Hz_4-45Hz,11,brain,0.769355
+sub-04,0train,0,B_250Hz_4-45Hz,12,heart beat,0.647666
+sub-04,0train,0,B_250Hz_4-45Hz,13,line noise,0.757575
+sub-04,0train,0,B_250Hz_4-45Hz,14,brain,0.481112
+sub-04,0train,0,C_128Hz_1-63Hz,0,brain,0.989719
+sub-04,0train,0,C_128Hz_1-63Hz,1,brain,0.981565
+sub-04,0train,0,C_128Hz_1-63Hz,2,brain,0.988852
+sub-04,0train,0,C_128Hz_1-63Hz,3,brain,0.767094
+sub-04,0train,0,C_128Hz_1-63Hz,4,brain,0.914176
+sub-04,0train,0,C_128Hz_1-63Hz,5,eye blink,0.806929
+sub-04,0train,0,C_128Hz_1-63Hz,6,brain,0.989852
+sub-04,0train,0,C_128Hz_1-63Hz,7,brain,0.9424
+sub-04,0train,0,C_128Hz_1-63Hz,8,other,0.940676
+sub-04,0train,0,C_128Hz_1-63Hz,9,brain,0.979963
+sub-04,0train,0,C_128Hz_1-63Hz,10,line noise,0.972238
+sub-04,0train,0,C_128Hz_1-63Hz,11,brain,0.394086
+sub-04,0train,0,C_128Hz_1-63Hz,12,brain,0.838846
+sub-04,0train,0,C_128Hz_1-63Hz,13,other,0.82129
+sub-04,0train,0,C_128Hz_1-63Hz,14,brain,0.858094
+sub-04,0train,0,D_128Hz_4-45Hz,0,brain,0.459823
+sub-04,0train,0,D_128Hz_4-45Hz,1,brain,0.8423
+sub-04,0train,0,D_128Hz_4-45Hz,2,brain,0.701628
+sub-04,0train,0,D_128Hz_4-45Hz,3,brain,0.880447
+sub-04,0train,0,D_128Hz_4-45Hz,4,brain,0.821124
+sub-04,0train,0,D_128Hz_4-45Hz,5,brain,0.557267
+sub-04,0train,0,D_128Hz_4-45Hz,6,brain,0.92472
+sub-04,0train,0,D_128Hz_4-45Hz,7,eye blink,0.643915
+sub-04,0train,0,D_128Hz_4-45Hz,8,brain,0.953863
+sub-04,0train,0,D_128Hz_4-45Hz,9,brain,0.729649
+sub-04,0train,0,D_128Hz_4-45Hz,10,brain,0.973706
+sub-04,0train,0,D_128Hz_4-45Hz,11,other,0.835814
+sub-04,0train,0,D_128Hz_4-45Hz,12,other,0.57448
+sub-04,0train,0,D_128Hz_4-45Hz,13,heart beat,0.736176
+sub-04,0train,0,D_128Hz_4-45Hz,14,line noise,0.882922
+sub-05,0train,0,A_250Hz_1-100Hz,0,brain,0.541673
+sub-05,0train,0,A_250Hz_1-100Hz,1,brain,0.796139
+sub-05,0train,0,A_250Hz_1-100Hz,2,eye blink,0.862141
+sub-05,0train,0,A_250Hz_1-100Hz,3,brain,0.688299
+sub-05,0train,0,A_250Hz_1-100Hz,4,brain,0.879589
+sub-05,0train,0,A_250Hz_1-100Hz,5,brain,0.723451
+sub-05,0train,0,A_250Hz_1-100Hz,6,muscle artifact,0.658266
+sub-05,0train,0,A_250Hz_1-100Hz,7,line noise,0.924827
+sub-05,0train,0,A_250Hz_1-100Hz,8,brain,0.844329
+sub-05,0train,0,A_250Hz_1-100Hz,9,brain,0.796684
+sub-05,0train,0,A_250Hz_1-100Hz,10,line noise,0.456197
+sub-05,0train,0,A_250Hz_1-100Hz,11,brain,0.47316
+sub-05,0train,0,A_250Hz_1-100Hz,12,line noise,0.895049
+sub-05,0train,0,A_250Hz_1-100Hz,13,other,0.586674
+sub-05,0train,0,A_250Hz_1-100Hz,14,line noise,0.80005
+sub-05,0train,0,B_250Hz_4-45Hz,0,brain,0.783132
+sub-05,0train,0,B_250Hz_4-45Hz,1,eye blink,0.519325
+sub-05,0train,0,B_250Hz_4-45Hz,2,brain,0.9916
+sub-05,0train,0,B_250Hz_4-45Hz,3,brain,0.994469
+sub-05,0train,0,B_250Hz_4-45Hz,4,eye blink,0.6247
+sub-05,0train,0,B_250Hz_4-45Hz,5,brain,0.933625
+sub-05,0train,0,B_250Hz_4-45Hz,6,brain,0.862009
+sub-05,0train,0,B_250Hz_4-45Hz,7,brain,0.943882
+sub-05,0train,0,B_250Hz_4-45Hz,8,other,0.711208
+sub-05,0train,0,B_250Hz_4-45Hz,9,brain,0.740619
+sub-05,0train,0,B_250Hz_4-45Hz,10,brain,0.761865
+sub-05,0train,0,B_250Hz_4-45Hz,11,brain,0.608277
+sub-05,0train,0,B_250Hz_4-45Hz,12,brain,0.864024
+sub-05,0train,0,B_250Hz_4-45Hz,13,other,0.588845
+sub-05,0train,0,B_250Hz_4-45Hz,14,brain,0.634664
+sub-05,0train,0,C_128Hz_1-63Hz,0,eye blink,0.484926
+sub-05,0train,0,C_128Hz_1-63Hz,1,brain,0.932458
+sub-05,0train,0,C_128Hz_1-63Hz,2,eye blink,0.891789
+sub-05,0train,0,C_128Hz_1-63Hz,3,brain,0.856805
+sub-05,0train,0,C_128Hz_1-63Hz,4,brain,0.897179
+sub-05,0train,0,C_128Hz_1-63Hz,5,brain,0.916171
+sub-05,0train,0,C_128Hz_1-63Hz,6,brain,0.834697
+sub-05,0train,0,C_128Hz_1-63Hz,7,brain,0.818907
+sub-05,0train,0,C_128Hz_1-63Hz,8,line noise,0.864408
+sub-05,0train,0,C_128Hz_1-63Hz,9,muscle artifact,0.540452
+sub-05,0train,0,C_128Hz_1-63Hz,10,brain,0.45667
+sub-05,0train,0,C_128Hz_1-63Hz,11,brain,0.453095
+sub-05,0train,0,C_128Hz_1-63Hz,12,line noise,0.794398
+sub-05,0train,0,C_128Hz_1-63Hz,13,other,0.58068
+sub-05,0train,0,C_128Hz_1-63Hz,14,line noise,0.789636
+sub-05,0train,0,D_128Hz_4-45Hz,0,brain,0.761488
+sub-05,0train,0,D_128Hz_4-45Hz,1,eye blink,0.57555
+sub-05,0train,0,D_128Hz_4-45Hz,2,eye blink,0.628331
+sub-05,0train,0,D_128Hz_4-45Hz,3,brain,0.991855
+sub-05,0train,0,D_128Hz_4-45Hz,4,brain,0.981226
+sub-05,0train,0,D_128Hz_4-45Hz,5,brain,0.949179
+sub-05,0train,0,D_128Hz_4-45Hz,6,brain,0.648456
+sub-05,0train,0,D_128Hz_4-45Hz,7,brain,0.962294
+sub-05,0train,0,D_128Hz_4-45Hz,8,brain,0.79289
+sub-05,0train,0,D_128Hz_4-45Hz,9,other,0.680591
+sub-05,0train,0,D_128Hz_4-45Hz,10,brain,0.884585
+sub-05,0train,0,D_128Hz_4-45Hz,11,brain,0.694688
+sub-05,0train,0,D_128Hz_4-45Hz,12,brain,0.767892
+sub-05,0train,0,D_128Hz_4-45Hz,13,brain,0.773262
+sub-05,0train,0,D_128Hz_4-45Hz,14,other,0.588589
+sub-06,0train,0,A_250Hz_1-100Hz,0,brain,0.991193
+sub-06,0train,0,A_250Hz_1-100Hz,1,brain,0.994404
+sub-06,0train,0,A_250Hz_1-100Hz,2,brain,0.907123
+sub-06,0train,0,A_250Hz_1-100Hz,3,brain,0.982784
+sub-06,0train,0,A_250Hz_1-100Hz,4,brain,0.967228
+sub-06,0train,0,A_250Hz_1-100Hz,5,brain,0.769279
+sub-06,0train,0,A_250Hz_1-100Hz,6,brain,0.99391
+sub-06,0train,0,A_250Hz_1-100Hz,7,brain,0.999856
+sub-06,0train,0,A_250Hz_1-100Hz,8,brain,0.967416
+sub-06,0train,0,A_250Hz_1-100Hz,9,brain,0.991791
+sub-06,0train,0,A_250Hz_1-100Hz,10,other,0.594737
+sub-06,0train,0,A_250Hz_1-100Hz,11,brain,0.476109
+sub-06,0train,0,A_250Hz_1-100Hz,12,other,0.974476
+sub-06,0train,0,A_250Hz_1-100Hz,13,brain,0.507561
+sub-06,0train,0,A_250Hz_1-100Hz,14,brain,0.609349
+sub-06,0train,0,B_250Hz_4-45Hz,0,brain,0.977713
+sub-06,0train,0,B_250Hz_4-45Hz,1,brain,0.817327
+sub-06,0train,0,B_250Hz_4-45Hz,2,brain,0.819337
+sub-06,0train,0,B_250Hz_4-45Hz,3,brain,0.926566
+sub-06,0train,0,B_250Hz_4-45Hz,4,brain,0.989322
+sub-06,0train,0,B_250Hz_4-45Hz,5,brain,0.938397
+sub-06,0train,0,B_250Hz_4-45Hz,6,brain,0.638853
+sub-06,0train,0,B_250Hz_4-45Hz,7,brain,0.527948
+sub-06,0train,0,B_250Hz_4-45Hz,8,brain,0.845308
+sub-06,0train,0,B_250Hz_4-45Hz,9,brain,0.944364
+sub-06,0train,0,B_250Hz_4-45Hz,10,brain,0.958669
+sub-06,0train,0,B_250Hz_4-45Hz,11,brain,0.92269
+sub-06,0train,0,B_250Hz_4-45Hz,12,brain,0.692071
+sub-06,0train,0,B_250Hz_4-45Hz,13,brain,0.809128
+sub-06,0train,0,B_250Hz_4-45Hz,14,other,0.776458
+sub-06,0train,0,C_128Hz_1-63Hz,0,brain,0.987384
+sub-06,0train,0,C_128Hz_1-63Hz,1,brain,0.986439
+sub-06,0train,0,C_128Hz_1-63Hz,2,brain,0.885573
+sub-06,0train,0,C_128Hz_1-63Hz,3,brain,0.980672
+sub-06,0train,0,C_128Hz_1-63Hz,4,brain,0.972678
+sub-06,0train,0,C_128Hz_1-63Hz,5,brain,0.677347
+sub-06,0train,0,C_128Hz_1-63Hz,6,brain,0.99812
+sub-06,0train,0,C_128Hz_1-63Hz,7,brain,0.999844
+sub-06,0train,0,C_128Hz_1-63Hz,8,brain,0.993413
+sub-06,0train,0,C_128Hz_1-63Hz,9,brain,0.990858
+sub-06,0train,0,C_128Hz_1-63Hz,10,brain,0.697657
+sub-06,0train,0,C_128Hz_1-63Hz,11,brain,0.478203
+sub-06,0train,0,C_128Hz_1-63Hz,12,other,0.97561
+sub-06,0train,0,C_128Hz_1-63Hz,13,brain,0.717292
+sub-06,0train,0,C_128Hz_1-63Hz,14,brain,0.765328
+sub-06,0train,0,D_128Hz_4-45Hz,0,brain,0.978383
+sub-06,0train,0,D_128Hz_4-45Hz,1,brain,0.822684
+sub-06,0train,0,D_128Hz_4-45Hz,2,brain,0.933756
+sub-06,0train,0,D_128Hz_4-45Hz,3,brain,0.806977
+sub-06,0train,0,D_128Hz_4-45Hz,4,brain,0.988208
+sub-06,0train,0,D_128Hz_4-45Hz,5,brain,0.906179
+sub-06,0train,0,D_128Hz_4-45Hz,6,brain,0.620512
+sub-06,0train,0,D_128Hz_4-45Hz,7,brain,0.433063
+sub-06,0train,0,D_128Hz_4-45Hz,8,brain,0.945697
+sub-06,0train,0,D_128Hz_4-45Hz,9,brain,0.633642
+sub-06,0train,0,D_128Hz_4-45Hz,10,brain,0.959359
+sub-06,0train,0,D_128Hz_4-45Hz,11,brain,0.976369
+sub-06,0train,0,D_128Hz_4-45Hz,12,brain,0.715211
+sub-06,0train,0,D_128Hz_4-45Hz,13,brain,0.83531
+sub-06,0train,0,D_128Hz_4-45Hz,14,other,0.787466
+sub-07,0train,0,A_250Hz_1-100Hz,0,eye blink,0.89823
+sub-07,0train,0,A_250Hz_1-100Hz,1,brain,0.988742
+sub-07,0train,0,A_250Hz_1-100Hz,2,brain,0.959767
+sub-07,0train,0,A_250Hz_1-100Hz,3,eye blink,0.869395
+sub-07,0train,0,A_250Hz_1-100Hz,4,brain,0.997322
+sub-07,0train,0,A_250Hz_1-100Hz,5,brain,0.995891
+sub-07,0train,0,A_250Hz_1-100Hz,6,brain,0.524282
+sub-07,0train,0,A_250Hz_1-100Hz,7,brain,0.893575
+sub-07,0train,0,A_250Hz_1-100Hz,8,line noise,0.999803
+sub-07,0train,0,A_250Hz_1-100Hz,9,brain,0.986117
+sub-07,0train,0,A_250Hz_1-100Hz,10,line noise,0.934549
+sub-07,0train,0,A_250Hz_1-100Hz,11,brain,0.912192
+sub-07,0train,0,A_250Hz_1-100Hz,12,brain,0.524746
+sub-07,0train,0,A_250Hz_1-100Hz,13,other,0.902029
+sub-07,0train,0,A_250Hz_1-100Hz,14,line noise,0.811501
+sub-07,0train,0,B_250Hz_4-45Hz,0,brain,0.876019
+sub-07,0train,0,B_250Hz_4-45Hz,1,brain,0.76266
+sub-07,0train,0,B_250Hz_4-45Hz,2,brain,0.63842
+sub-07,0train,0,B_250Hz_4-45Hz,3,brain,0.940291
+sub-07,0train,0,B_250Hz_4-45Hz,4,brain,0.976266
+sub-07,0train,0,B_250Hz_4-45Hz,5,eye blink,0.825223
+sub-07,0train,0,B_250Hz_4-45Hz,6,brain,0.906212
+sub-07,0train,0,B_250Hz_4-45Hz,7,brain,0.434562
+sub-07,0train,0,B_250Hz_4-45Hz,8,brain,0.91705
+sub-07,0train,0,B_250Hz_4-45Hz,9,brain,0.464219
+sub-07,0train,0,B_250Hz_4-45Hz,10,brain,0.918957
+sub-07,0train,0,B_250Hz_4-45Hz,11,brain,0.844954
+sub-07,0train,0,B_250Hz_4-45Hz,12,line noise,0.984235
+sub-07,0train,0,B_250Hz_4-45Hz,13,line noise,0.548642
+sub-07,0train,0,B_250Hz_4-45Hz,14,other,0.702115
+sub-07,0train,0,C_128Hz_1-63Hz,0,eye blink,0.907449
+sub-07,0train,0,C_128Hz_1-63Hz,1,brain,0.969509
+sub-07,0train,0,C_128Hz_1-63Hz,2,line noise,0.501494
+sub-07,0train,0,C_128Hz_1-63Hz,3,eye blink,0.676408
+sub-07,0train,0,C_128Hz_1-63Hz,4,brain,0.995753
+sub-07,0train,0,C_128Hz_1-63Hz,5,line noise,0.537242
+sub-07,0train,0,C_128Hz_1-63Hz,6,brain,0.997739
+sub-07,0train,0,C_128Hz_1-63Hz,7,brain,0.798346
+sub-07,0train,0,C_128Hz_1-63Hz,8,brain,0.960206
+sub-07,0train,0,C_128Hz_1-63Hz,9,line noise,0.999573
+sub-07,0train,0,C_128Hz_1-63Hz,10,brain,0.981158
+sub-07,0train,0,C_128Hz_1-63Hz,11,line noise,0.801914
+sub-07,0train,0,C_128Hz_1-63Hz,12,line noise,0.887341
+sub-07,0train,0,C_128Hz_1-63Hz,13,other,0.942557
+sub-07,0train,0,C_128Hz_1-63Hz,14,line noise,0.917751
+sub-07,0train,0,D_128Hz_4-45Hz,0,brain,0.599968
+sub-07,0train,0,D_128Hz_4-45Hz,1,brain,0.760527
+sub-07,0train,0,D_128Hz_4-45Hz,2,brain,0.946397
+sub-07,0train,0,D_128Hz_4-45Hz,3,brain,0.728439
+sub-07,0train,0,D_128Hz_4-45Hz,4,brain,0.97181
+sub-07,0train,0,D_128Hz_4-45Hz,5,eye blink,0.831619
+sub-07,0train,0,D_128Hz_4-45Hz,6,brain,0.972664
+sub-07,0train,0,D_128Hz_4-45Hz,7,brain,0.515684
+sub-07,0train,0,D_128Hz_4-45Hz,8,brain,0.918683
+sub-07,0train,0,D_128Hz_4-45Hz,9,brain,0.408549
+sub-07,0train,0,D_128Hz_4-45Hz,10,brain,0.628999
+sub-07,0train,0,D_128Hz_4-45Hz,11,brain,0.88343
+sub-07,0train,0,D_128Hz_4-45Hz,12,line noise,0.990417
+sub-07,0train,0,D_128Hz_4-45Hz,13,other,0.680487
+sub-07,0train,0,D_128Hz_4-45Hz,14,line noise,0.457127
+sub-08,0train,0,A_250Hz_1-100Hz,0,brain,0.994181
+sub-08,0train,0,A_250Hz_1-100Hz,1,brain,0.995795
+sub-08,0train,0,A_250Hz_1-100Hz,2,eye blink,0.914415
+sub-08,0train,0,A_250Hz_1-100Hz,3,brain,0.995347
+sub-08,0train,0,A_250Hz_1-100Hz,4,brain,0.997883
+sub-08,0train,0,A_250Hz_1-100Hz,5,brain,0.866698
+sub-08,0train,0,A_250Hz_1-100Hz,6,brain,0.906808
+sub-08,0train,0,A_250Hz_1-100Hz,7,brain,0.933181
+sub-08,0train,0,A_250Hz_1-100Hz,8,brain,0.987105
+sub-08,0train,0,A_250Hz_1-100Hz,9,brain,0.996064
+sub-08,0train,0,A_250Hz_1-100Hz,10,brain,0.976131
+sub-08,0train,0,A_250Hz_1-100Hz,11,other,0.820941
+sub-08,0train,0,A_250Hz_1-100Hz,12,brain,0.57574
+sub-08,0train,0,A_250Hz_1-100Hz,13,line noise,0.930391
+sub-08,0train,0,A_250Hz_1-100Hz,14,other,0.94483
+sub-08,0train,0,B_250Hz_4-45Hz,0,brain,0.970813
+sub-08,0train,0,B_250Hz_4-45Hz,1,brain,0.997477
+sub-08,0train,0,B_250Hz_4-45Hz,2,brain,0.997076
+sub-08,0train,0,B_250Hz_4-45Hz,3,brain,0.981558
+sub-08,0train,0,B_250Hz_4-45Hz,4,brain,0.949627
+sub-08,0train,0,B_250Hz_4-45Hz,5,brain,0.956354
+sub-08,0train,0,B_250Hz_4-45Hz,6,brain,0.991308
+sub-08,0train,0,B_250Hz_4-45Hz,7,brain,0.864533
+sub-08,0train,0,B_250Hz_4-45Hz,8,brain,0.990926
+sub-08,0train,0,B_250Hz_4-45Hz,9,brain,0.620438
+sub-08,0train,0,B_250Hz_4-45Hz,10,brain,0.970058
+sub-08,0train,0,B_250Hz_4-45Hz,11,brain,0.96632
+sub-08,0train,0,B_250Hz_4-45Hz,12,eye blink,0.916254
+sub-08,0train,0,B_250Hz_4-45Hz,13,brain,0.886688
+sub-08,0train,0,B_250Hz_4-45Hz,14,other,0.877536
+sub-08,0train,0,C_128Hz_1-63Hz,0,brain,0.994781
+sub-08,0train,0,C_128Hz_1-63Hz,1,brain,0.994966
+sub-08,0train,0,C_128Hz_1-63Hz,2,eye blink,0.951886
+sub-08,0train,0,C_128Hz_1-63Hz,3,brain,0.998178
+sub-08,0train,0,C_128Hz_1-63Hz,4,brain,0.997018
+sub-08,0train,0,C_128Hz_1-63Hz,5,brain,0.945826
+sub-08,0train,0,C_128Hz_1-63Hz,6,brain,0.755223
+sub-08,0train,0,C_128Hz_1-63Hz,7,brain,0.970012
+sub-08,0train,0,C_128Hz_1-63Hz,8,brain,0.996153
+sub-08,0train,0,C_128Hz_1-63Hz,9,brain,0.998637
+sub-08,0train,0,C_128Hz_1-63Hz,10,brain,0.860856
+sub-08,0train,0,C_128Hz_1-63Hz,11,brain,0.919092
+sub-08,0train,0,C_128Hz_1-63Hz,12,line noise,0.64564
+sub-08,0train,0,C_128Hz_1-63Hz,13,line noise,0.552621
+sub-08,0train,0,C_128Hz_1-63Hz,14,other,0.998907
+sub-08,0train,0,D_128Hz_4-45Hz,0,brain,0.96739
+sub-08,0train,0,D_128Hz_4-45Hz,1,brain,0.997491
+sub-08,0train,0,D_128Hz_4-45Hz,2,brain,0.99326
+sub-08,0train,0,D_128Hz_4-45Hz,3,brain,0.978477
+sub-08,0train,0,D_128Hz_4-45Hz,4,brain,0.950981
+sub-08,0train,0,D_128Hz_4-45Hz,5,eye blink,0.671469
+sub-08,0train,0,D_128Hz_4-45Hz,6,brain,0.878514
+sub-08,0train,0,D_128Hz_4-45Hz,7,brain,0.923013
+sub-08,0train,0,D_128Hz_4-45Hz,8,brain,0.745073
+sub-08,0train,0,D_128Hz_4-45Hz,9,brain,0.921693
+sub-08,0train,0,D_128Hz_4-45Hz,10,brain,0.905254
+sub-08,0train,0,D_128Hz_4-45Hz,11,brain,0.986616
+sub-08,0train,0,D_128Hz_4-45Hz,12,eye blink,0.923426
+sub-08,0train,0,D_128Hz_4-45Hz,13,brain,0.899138
+sub-08,0train,0,D_128Hz_4-45Hz,14,other,0.9322
+sub-09,0train,0,A_250Hz_1-100Hz,0,brain,0.995075
+sub-09,0train,0,A_250Hz_1-100Hz,1,line noise,0.683228
+sub-09,0train,0,A_250Hz_1-100Hz,2,brain,0.998145
+sub-09,0train,0,A_250Hz_1-100Hz,3,brain,0.940401
+sub-09,0train,0,A_250Hz_1-100Hz,4,brain,0.945583
+sub-09,0train,0,A_250Hz_1-100Hz,5,line noise,0.847701
+sub-09,0train,0,A_250Hz_1-100Hz,6,brain,0.984288
+sub-09,0train,0,A_250Hz_1-100Hz,7,eye blink,0.956745
+sub-09,0train,0,A_250Hz_1-100Hz,8,brain,0.968742
+sub-09,0train,0,A_250Hz_1-100Hz,9,other,0.577985
+sub-09,0train,0,A_250Hz_1-100Hz,10,brain,0.830541
+sub-09,0train,0,A_250Hz_1-100Hz,11,line noise,0.544422
+sub-09,0train,0,A_250Hz_1-100Hz,12,line noise,0.547173
+sub-09,0train,0,A_250Hz_1-100Hz,13,line noise,0.564642
+sub-09,0train,0,A_250Hz_1-100Hz,14,other,0.708694
+sub-09,0train,0,B_250Hz_4-45Hz,0,brain,0.992172
+sub-09,0train,0,B_250Hz_4-45Hz,1,line noise,0.675415
+sub-09,0train,0,B_250Hz_4-45Hz,2,brain,0.998748
+sub-09,0train,0,B_250Hz_4-45Hz,3,brain,0.952277
+sub-09,0train,0,B_250Hz_4-45Hz,4,brain,0.983475
+sub-09,0train,0,B_250Hz_4-45Hz,5,brain,0.983111
+sub-09,0train,0,B_250Hz_4-45Hz,6,brain,0.868933
+sub-09,0train,0,B_250Hz_4-45Hz,7,brain,0.970873
+sub-09,0train,0,B_250Hz_4-45Hz,8,brain,0.95999
+sub-09,0train,0,B_250Hz_4-45Hz,9,brain,0.92958
+sub-09,0train,0,B_250Hz_4-45Hz,10,brain,0.936728
+sub-09,0train,0,B_250Hz_4-45Hz,11,brain,0.91963
+sub-09,0train,0,B_250Hz_4-45Hz,12,eye blink,0.823071
+sub-09,0train,0,B_250Hz_4-45Hz,13,brain,0.458818
+sub-09,0train,0,B_250Hz_4-45Hz,14,heart beat,0.474067
+sub-09,0train,0,C_128Hz_1-63Hz,0,brain,0.995771
+sub-09,0train,0,C_128Hz_1-63Hz,1,brain,0.811581
+sub-09,0train,0,C_128Hz_1-63Hz,2,brain,0.99865
+sub-09,0train,0,C_128Hz_1-63Hz,3,brain,0.730468
+sub-09,0train,0,C_128Hz_1-63Hz,4,brain,0.896951
+sub-09,0train,0,C_128Hz_1-63Hz,5,brain,0.872607
+sub-09,0train,0,C_128Hz_1-63Hz,6,brain,0.982342
+sub-09,0train,0,C_128Hz_1-63Hz,7,brain,0.969987
+sub-09,0train,0,C_128Hz_1-63Hz,8,eye blink,0.976372
+sub-09,0train,0,C_128Hz_1-63Hz,9,line noise,0.759481
+sub-09,0train,0,C_128Hz_1-63Hz,10,line noise,0.53511
+sub-09,0train,0,C_128Hz_1-63Hz,11,line noise,0.538964
+sub-09,0train,0,C_128Hz_1-63Hz,12,brain,0.628118
+sub-09,0train,0,C_128Hz_1-63Hz,13,brain,0.9772
+sub-09,0train,0,C_128Hz_1-63Hz,14,other,0.567753
+sub-09,0train,0,D_128Hz_4-45Hz,0,brain,0.992679
+sub-09,0train,0,D_128Hz_4-45Hz,1,line noise,0.755357
+sub-09,0train,0,D_128Hz_4-45Hz,2,brain,0.998576
+sub-09,0train,0,D_128Hz_4-45Hz,3,brain,0.98183
+sub-09,0train,0,D_128Hz_4-45Hz,4,brain,0.932367
+sub-09,0train,0,D_128Hz_4-45Hz,5,brain,0.675998
+sub-09,0train,0,D_128Hz_4-45Hz,6,brain,0.983898
+sub-09,0train,0,D_128Hz_4-45Hz,7,brain,0.968882
+sub-09,0train,0,D_128Hz_4-45Hz,8,brain,0.921401
+sub-09,0train,0,D_128Hz_4-45Hz,9,brain,0.931218
+sub-09,0train,0,D_128Hz_4-45Hz,10,brain,0.926521
+sub-09,0train,0,D_128Hz_4-45Hz,11,brain,0.907025
+sub-09,0train,0,D_128Hz_4-45Hz,12,eye blink,0.859913
+sub-09,0train,0,D_128Hz_4-45Hz,13,other,0.763786
+sub-09,0train,0,D_128Hz_4-45Hz,14,heart beat,0.590263
