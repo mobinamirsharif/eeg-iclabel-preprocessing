@@ -31,7 +31,7 @@ Under the shared 4–45 Hz passband, the controlled 250 Hz and 128 Hz conditions
 
 This result does not support the earlier hypothesis that 128 Hz sampling alone causes a universal ICLabel “collapse.” It also does not establish passband, channel order, component count, rank handling, or any other individual setting as the sole explanation.
 
-The evidence-supported interpretation is that the unusual DEAP prediction distribution is dataset- and preprocessing-dependent and requires further validation with appropriate reference signals, expert component review, or independently labelled ground truth.
+The current evidence is consistent with a dataset- and preprocessing-dependent anomaly, but it does not identify the cause of the unusual DEAP distribution. Direct validation requires appropriate reference signals, expert component review, independently labelled ground truth, or a controlled analysis derived from the original raw DEAP recordings.
 
 ## Current status
 
@@ -264,7 +264,7 @@ No repository license has been selected yet. Evaluate a standard code license su
 - MNE-ICALabel documents ICLabel as designed around extended Infomax ICA, common-average reference, and 1–100 Hz filtered EEG. It also states that the model can run outside those specifications and that the preprocessing effects were not established in the original ICLabel paper.
 - The preprocessed DEAP package is 128 Hz and bandwidth-limited; increasing a later software filter cutoff cannot restore frequencies already removed upstream.
 - The existing BCI comparison shows that the unusual DEAP Heart Beat pattern did not repeat in the selected 250 Hz BCI recordings. It does not by itself prove that sampling rate alone caused the DEAP behavior.
-- The completed controlled BCI comparison found very similar aggregate distributions at 250 Hz and 128 Hz under the shared 4–45 Hz passband. A defensible conclusion is therefore that the DEAP anomaly is data/preprocessing dependent and is not explained by sampling rate alone.
+- The completed controlled BCI comparison found very similar aggregate distributions at 250 Hz and 128 Hz under the shared 4–45 Hz passband. This shows that 128 Hz sampling alone did not reproduce the DEAP-like anomaly in the selected BCI recordings; it does not directly estimate the sampling-rate effect within DEAP or identify the cause of the DEAP output.
 
 ## Limitations and future work
 

@@ -58,7 +58,7 @@ The publication-safe DEAP artifacts are stored in `results/deap_screening/`. The
 
 ## Preserved development record
 
-The exact historical scripts and their safe numeric outputs are stored in `archive/deap_history/`. The generated `results/deap_version_history/` comparison reconciles all seven classes across Baseline through V4 and records source hashes. The four original PDFs are stored unchanged in `archive/legacy_reports/` with a superseded-conclusions notice. This preserves provenance without presenting old claims as current evidence.
+The exact historical scripts and their safe numeric outputs are preserved under `archive/deap_history/`. The reconciled version-history artifacts under `results/deap_version_history/` preserve provenance by reconciling all seven classes across Baseline through V4 and recording source hashes. Superseded standalone PDF and HTML reports are excluded from the public repository.
 
 ## Publication framing
 
