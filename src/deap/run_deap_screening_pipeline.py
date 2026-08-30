@@ -103,7 +103,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--low-freq", type=float, default=DEFAULT_LOW_FREQ_HZ)
     parser.add_argument("--high-freq", type=float, default=DEFAULT_HIGH_FREQ_HZ)
     parser.add_argument(
-        "--crossfade-seconds", type=float, default=DEFAULT_CROSSFADE_SECONDS
+        "--crossfade-seconds",
+        type=float,
+        default=DEFAULT_CROSSFADE_SECONDS,
+        help=(
+            "Experimental trial-boundary blend in seconds. The default 0.5 "
+            "reproduces the archived V4 configuration; use 0 for no crossfade."
+        ),
     )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     return parser.parse_args()

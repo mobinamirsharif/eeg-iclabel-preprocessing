@@ -28,9 +28,19 @@ The corrected table enforces two invariants per row:
 1. the seven class counts sum to `Total ICs`; and
 2. Muscle + Eye Blink + Heart Beat + Line Noise + Channel Noise equals `Artifacts Removed` under the archived argmax exclusion policy.
 
-## Artifact-removal terminology
+## Prediction and exclusion terminology
 
-The pipeline’s default behavior reproduces the archived policy: any IC whose top predicted class is one of the five artifact classes is excluded. This is described as an “artifact-policy exclusion,” not a confirmed artifact. The corrected pipeline also exposes `--artifact-threshold` so a future run can require a minimum predicted-class probability.
+The current BCI pipeline is prediction-only by default. It records the seven-class ICLabel output and identifies components that meet the configured artifact policy, but it does not exclude those components or reconstruct EEG unless `--apply-exclusions` is supplied explicitly. A policy candidate is not a confirmed artifact.
+
+The `--artifact-threshold` option sets the minimum predicted-class probability for a policy candidate. The command below reproduces the archived argmax exclusion behavior for a future rerun, but it should be used only when that reconstruction policy has been justified for the intended analysis:
+
+```powershell
+& $python .\src\bci\run_bci_batch_pipeline.py `
+  --apply-exclusions `
+  --artifact-threshold 0.0
+```
+
+This interface change does not alter or regenerate the committed BCI results. Those results remain a record of the archived policy.
 
 `Other` is retained. It is a catch-all class and is not automatically treated as Brain or artifact.
 
@@ -73,6 +83,8 @@ The later archived `ICLabel_DEAP_final.py` run used a corrected 32-channel order
 Across 960 ICA components, that screening run produced 775 Heart Beat predictions (80.73%). This is reported as an anomalous model-output distribution. The pipeline supplied only 32 EEG channels to ICLabel and did not supply ECG or plethysmography, so these calls cannot be verified as cardiac artifacts from the available ICLabel output alone.
 
 `src/deap/run_deap_screening_pipeline.py` preserves the explicit five-trial screening configuration by default, records available and used trials separately, reports all seven classes, and performs no automatic component removal. The reconciled aggregate artifacts exclude FIF files, raw/cleaned signal traces, and individual participant topographies.
+
+The default 0.5-second trial-boundary crossfade is preserved solely to reproduce the archived V4 screening configuration. Crossfading changes the samples around each boundary and has not been validated as a universal EEG preprocessing method or as a correction for the anomalous ICLabel distribution. A no-crossfade run is already supported with `--crossfade-seconds 0`. Comparing crossfade and no-crossfade configurations would require a complete DEAP rerun with all dependent outputs regenerated; no such comparison is claimed by the committed results.
 
 ## Historical version reconciliation
 

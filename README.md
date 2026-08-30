@@ -1,17 +1,46 @@
-# ICLabel EEG Preprocessing Robustness & Troubleshooting Case Study
+# ICLabel EEG Preprocessing Robustness and Troubleshooting Case Study
 
-This directory is the corrected, publication-oriented version of the EEG/ICLabel work. The original scripts and result folders in the parent directory are preserved as an archive of the troubleshooting process.
+## Overview
+
+This repository investigates an anomalous ICLabel output distribution observed during an analysis of preprocessed DEAP EEG data. It documents the original analysis, the subsequent troubleshooting sequence, the reconciliation of previously generated results, and a controlled comparison using BCI Competition IV Dataset 2a.
+
+The project evaluates how dataset and preprocessing conditions may affect ICLabel predictions. It does not introduce a new classifier and does not establish component ground truth. All reported ICLabel class assignments are model predictions and must not be interpreted as confirmed artifacts, clinical findings, or biological discoveries.
+
+## Problem statement
+
+In the archived final DEAP screening run, 775 of 960 independent components (80.73%) were predicted as `Heart Beat`. This unusually dominant prediction pattern was scientifically suspicious and required further investigation.
+
+Only the first 32 EEG channels from the preprocessed DEAP package were supplied to ICLabel. No ECG or plethysmography reference channel was included. The resulting `Heart Beat` predictions therefore cannot be treated as confirmation that the corresponding components were cardiac artifacts.
+
+The historical Baseline-to-V4 troubleshooting sequence changed several variables, including channel mapping, downstream filtering requests, trial-boundary handling, ICA component count, and rank-selection logic. Because multiple variables changed and ICA was refitted at each stage, this sequence is descriptive rather than a controlled one-factor experiment. It cannot identify any individual setting as the unique cause of the anomalous distribution.
+
+## Research questions
+
+This project addresses the following questions:
+
+1. Can the previously generated BCI and DEAP outputs be reconciled consistently across all seven ICLabel classes?
+2. Which conclusions are supported by the historical troubleshooting sequence, and which earlier causal claims must be rejected?
+3. How do sampling rate and passband affect aggregate ICLabel predictions when they are compared more systematically?
+4. Can model predictions be reported separately from decisions to exclude components or reconstruct EEG signals?
+
+The original BCI analysis evaluated one selected recording for each of nine subjects, rather than every available session and run. The subsequent controlled experiment used the same recording scope and evaluated four combinations of sampling rate and passband while keeping the other documented analysis settings consistent.
+
+## Main finding
+
+Under the shared 4–45 Hz passband, the controlled 250 Hz and 128 Hz conditions produced similar aggregate Brain prediction proportions: 76.30% and 75.56%, respectively.
+
+This result does not support the earlier hypothesis that 128 Hz sampling alone causes a universal ICLabel “collapse.” It also does not establish passband, channel order, component count, rank handling, or any other individual setting as the sole explanation.
+
+The evidence-supported interpretation is that the unusual DEAP prediction distribution is dataset- and preprocessing-dependent and requires further validation with appropriate reference signals, expert component review, or independently labelled ground truth.
 
 ## Current status
 
-- The existing BCI Competition IV Dataset 2a results have been reconciled from their per-subject JSON reports.
-- The cohort table and dashboard now include all seven ICLabel classes.
-- The BCI pipeline records the selected session/run, uses strict montage validation, and no longer claims an unverified GPU benchmark.
-- The four-condition controlled comparison has been executed successfully for all nine subjects (36 condition-level fits; 540 ICLabel predictions; zero failed conditions).
-- The archived final DEAP screening run has been reconciled without redistributing raw or reconstructed EEG. Its aggregate artifacts now distinguish 40 available trials from five trials used for ICA and describe all classes as ICLabel predictions.
-- The complete Baseline-to-V4 development record is now preserved under `archive/deap_history/`, including byte-identical scripts, 160 per-subject JSON reports, aggregate summaries, benchmarks, source hashes, and a reconciled five-stage comparison.
-- Four original PDFs are preserved unchanged under `archive/legacy_reports/` and explicitly marked as superseded rather than current conclusions.
-- The DEAP and BCI conclusions have been rewritten as a preprocessing-robustness case study rather than a new model, clinical validation, or proof of a universal Nyquist bug.
+- The existing BCI results have been reconciled across all seven ICLabel classes: nine selected recordings, 15 components per recording, and 135 components in total.
+- The four-condition controlled BCI experiment completed 36 subject-condition ICA fits and generated 540 component predictions with zero recorded failures.
+- The archived final DEAP screening output has been reconciled to 960 components from 32 subjects and 160 trials used for ICA.
+- The complete Baseline-to-V4 DEAP development history is preserved under `archive/deap_history/`.
+- Superseded PDF and HTML reports are preserved under `archive/legacy_reports/` for historical review and must not be treated as current findings.
+- Raw or licensed EEG datasets, reconstructed EEG files, credentials, and local filesystem paths are not included.
 
 ## Verified reconciliation of the existing BCI run
 
@@ -27,7 +56,7 @@ The previous dashboard omitted `Other` and `Channel Noise`, so its donut chart u
 
 ![Corrected BCI ICLabel dashboard](figures/cohort_iclabel_summary_dashboard.png)
 
-These values are ICLabel model predictions, not manually verified component ground truth. “Artifact-policy exclusions” means the existing pipeline excluded ICs whose argmax class was one of Muscle, Eye Blink, Heart Beat, Line Noise, or Channel Noise.
+These values are ICLabel model predictions, not manually verified component ground truth. “Artifact-policy exclusions” describes the archived run, which excluded ICs whose argmax class was one of Muscle, Eye Blink, Heart Beat, Line Noise, or Channel Noise. The current pipeline is prediction-only by default and requires an explicit option before applying this reconstruction policy.
 
 ## Scope of the existing BCI result
 
@@ -101,12 +130,19 @@ This sequence is descriptive, not a one-factor ablation study. Several settings 
 
 ![Reconciled DEAP version history](results/deap_version_history/version_comparison.png)
 
-The archived scripts and PDFs retain the original development record. Their automatic-removal terminology and definitive physiological, GPU, clinical, or sampling-rate claims are superseded by the evidence-aware interpretation in this README.
+The archived scripts and reports retain the original development record. Their automatic-removal terminology and definitive physiological, GPU, clinical, or sampling-rate claims are superseded by the evidence-aware interpretation in this README.
+
+> **Historical-use warning:** Files under `archive/legacy_reports/` contain superseded conclusions. They must not be cited or presented as current findings. For a public release, the recommended approach is to omit them from the main release or place them in a clearly labelled historical release only after supervisor and DEAP-license review.
 
 ## Reproduce the corrected artifacts
 
-The pipeline was tested with Python 3.10. From this directory, activate an
-environment containing `requirements.txt`, then run:
+Python 3.10 is the supported and tested version. Create or activate an isolated environment, then install the runtime dependencies:
+
+```powershell
+& $python -m pip install --requirement .\requirements.txt
+```
+
+Rebuild the committed BCI summary artifacts from their source reports when those local reports are available:
 
 ```powershell
 $python = 'python'
@@ -115,10 +151,18 @@ $python = 'python'
 & $python .\src\bci\generate_summary_plots.py
 ```
 
-Run the corrected BCI pipeline on the first selected recording per subject:
+Run the corrected BCI pipeline on the first selected recording per subject. By default, it writes prediction reports and aggregate summaries without excluding components or reconstructing EEG:
 
 ```powershell
 & $python .\src\bci\run_bci_batch_pipeline.py
+```
+
+Automatic exclusion and reconstruction are explicit and opt-in. The following command preserves the ability to reproduce the archived threshold-zero argmax policy; ICLabel policy candidates are still model predictions rather than manually validated artifacts:
+
+```powershell
+& $python .\src\bci\run_bci_batch_pipeline.py `
+  --apply-exclusions `
+  --artifact-threshold 0.0
 ```
 
 Run it across every session/run returned by MOABB:
@@ -155,7 +199,16 @@ Run the publication-safe DEAP screening pipeline with locally authorized DEAP fi
   --max-trials 5
 ```
 
-The script requires a directory containing `s01.dat` through `s32.dat`. It does not download or redistribute DEAP, and it does not automatically remove predicted components. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
+The default 0.5-second trial-boundary crossfade reproduces the archived V4 configuration. It is an experimental preprocessing choice, not a validated universal solution. Run a no-crossfade configuration with:
+
+```powershell
+& $python .\src\deap\run_deap_screening_pipeline.py `
+  --data-dir '<PATH_TO_AUTHORIZED_DEAP_FILES>' `
+  --max-trials 5 `
+  --crossfade-seconds 0
+```
+
+The script requires a directory containing `s01.dat` through `s32.dat`. It does not download or redistribute DEAP, and it does not automatically remove predicted components. A crossfade/no-crossfade comparison requires a complete DEAP rerun and consistent regeneration of dependent outputs; no such comparison is claimed here. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
 
 Rebuild the five-stage historical comparison from the versioned archive:
 
@@ -163,12 +216,26 @@ Rebuild the five-stage historical comparison from the versioned archive:
 & $python .\src\deap\build_version_history.py
 ```
 
+### Run validation tests without running ICA
+
+The validation suite reads only the committed CSV and JSON artifacts. It does not download either dataset or execute ICA:
+
+```powershell
+& $python -m pip install --requirement .\requirements-test.txt
+& $python -m compileall -q .\src .\archive\deap_history .\tests
+& $python -m pytest -q
+```
+
 ## Repository layout
 
 ```text
-final/
+eeg-iclabel-preprocessing/
+├── .github/
+│   └── workflows/
 ├── README.md
 ├── requirements.txt
+├── requirements-test.txt
+├── tests/
 ├── archive/
 │   ├── deap_history/
 │   ├── legacy_reports/
@@ -191,9 +258,9 @@ final/
     └── summary_tables/
 ```
 
-Raw DEAP/BCI files, reconstructed FIF files, individual signal traces/topographies, compressed archives, credentials, and dataset caches are excluded from Git. The DEAP license restricts redistribution, so users should obtain it from the official source under its own terms. The legacy PDFs are included for private historical review and should be reviewed against the DEAP EULA and the corrected conclusions before the repository is made public.
+Raw DEAP/BCI files, reconstructed FIF files, individual signal traces/topographies, compressed archives, credentials, and dataset caches are excluded from Git. The DEAP license restricts redistribution, so users should obtain it from the official source under its own terms. Legacy reports are retained for private historical review; the recommended public-release policy is to omit them from the main release or publish them only as a clearly labelled historical release after review against the DEAP EULA and the corrected conclusions.
 
-No repository license has been selected yet. Add one only after deciding how the project code should be reused; a code license does not override dataset licenses.
+No repository license has been selected yet. Before a public release, evaluate a standard code license such as MIT or BSD-3-Clause with the project supervisor or institution, but select it only after deciding how the code should be reused. A code license does not override dataset licenses.
 
 ## Evidence-aware interpretation
 

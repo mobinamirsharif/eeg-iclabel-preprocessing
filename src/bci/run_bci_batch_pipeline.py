@@ -4,6 +4,11 @@ By default, the script evaluates the first available session and first available
 run for each of the nine subjects. That scope reproduces the design of the
 existing project; it does not claim to cover every recording in the dataset.
 Use ``--all-recordings`` to evaluate all available session/run combinations.
+
+The default workflow reports ICLabel predictions without reconstructing EEG or
+excluding components. Reconstruction is available only through the explicit
+``--apply-exclusions`` option. ICLabel predictions and policy candidates are not
+manually validated component ground truth.
 """
 
 from __future__ import annotations
@@ -102,14 +107,17 @@ def prepare_raw(raw: mne.io.BaseRaw) -> mne.io.BaseRaw:
     return raw
 
 
-def create_output_dirs(output_root: Path) -> dict[str, Path]:
+def create_output_dirs(
+    output_root: Path, include_reconstructed_data: bool
+) -> dict[str, Path]:
     directories = {
-        "filtered": output_root / "iclabel_filtered_data",
         "figures": output_root / "figures",
         "reports": output_root / "iclabel_reports",
         "summary": output_root / "summary",
         "benchmark": output_root / "benchmark",
     }
+    if include_reconstructed_data:
+        directories["filtered"] = output_root / "iclabel_filtered_data"
     for directory in directories.values():
         directory.mkdir(parents=True, exist_ok=True)
     return directories
@@ -122,6 +130,7 @@ def evaluate_recording(
     run_key: str,
     output_dirs: dict[str, Path],
     artifact_threshold: float,
+    apply_exclusions: bool,
 ) -> tuple[dict[str, object], dict[str, object]]:
     start_time = time.perf_counter()
     raw = prepare_raw(raw)
@@ -141,44 +150,44 @@ def evaluate_recording(
     total_components = len(labels)
 
     class_distribution = {class_name: 0 for class_name in ICLABEL_CLASSES}
-    excluded_indices: list[int] = []
+    policy_candidate_indices: list[int] = []
     component_details: list[dict[str, object]] = []
     for index, (label, probability) in enumerate(zip(labels, probabilities)):
         if label not in class_distribution:
             raise ValueError(f"Unexpected ICLabel class: {label}")
         class_distribution[label] += 1
-        excluded = label in ARTIFACT_CLASSES and probability >= artifact_threshold
-        if excluded:
-            excluded_indices.append(index)
+        policy_candidate = (
+            label in ARTIFACT_CLASSES and probability >= artifact_threshold
+        )
+        if policy_candidate:
+            policy_candidate_indices.append(index)
         component_details.append(
             {
                 "component_index": index,
                 "predicted_label": label,
                 "predicted_class_probability": round(float(probability), 6),
-                "excluded_by_policy": excluded,
+                "artifact_policy_candidate": policy_candidate,
+                "excluded_from_reconstruction": (
+                    apply_exclusions and policy_candidate
+                ),
             }
         )
 
     if sum(class_distribution.values()) != total_components:
         raise RuntimeError("Seven-class counts do not reconcile to the ICA total")
 
-    filtered = raw.copy()
-    ica.apply(filtered, exclude=excluded_indices, verbose=False)
-    elapsed = time.perf_counter() - start_time
-
     recording_tag = "__".join(
         [subject_tag, safe_name(session_key), safe_name(run_key)]
-    )
-    filtered.save(
-        output_dirs["filtered"] / f"{recording_tag}_iclabel_filtered_raw.fif",
-        overwrite=True,
-        verbose=False,
     )
 
     # Probability plot.
     probability_path = output_dirs["figures"] / f"{recording_tag}_probabilities.png"
     fig, axis = plt.subplots(figsize=(11, 4.5), dpi=200)
-    colors = ["#d9534f" if label in ARTIFACT_CLASSES else "#5cb85c" for label in labels]
+    candidate_set = set(policy_candidate_indices)
+    colors = [
+        "#d9534f" if index in candidate_set else "#5cb85c"
+        for index in range(total_components)
+    ]
     bars = axis.bar(range(total_components), probabilities * 100.0, color=colors, edgecolor="#222222", alpha=0.85)
     for bar, label, probability in zip(bars, labels, probabilities):
         axis.text(
@@ -199,24 +208,57 @@ def evaluate_recording(
     fig.savefig(probability_path, dpi=300)
     plt.close(fig)
 
-    # The comparison starts from already filtered/CAR data, so avoid calling it raw.
-    waveform_path = output_dirs["figures"] / f"{recording_tag}_pre_vs_post_ica.png"
-    sample_count = min(int(DISPLAY_SECONDS * sampling_rate), raw.n_times)
-    time_axis = np.arange(sample_count) / sampling_rate
-    channel = "Cz" if "Cz" in raw.ch_names else raw.ch_names[0]
-    before = raw.get_data(picks=[channel], start=0, stop=sample_count)[0] * 1e6
-    after = filtered.get_data(picks=[channel], start=0, stop=sample_count)[0] * 1e6
-    fig, axis = plt.subplots(figsize=(12, 4.5), dpi=200)
-    axis.plot(time_axis, before, color="#d9534f", linestyle="--", alpha=0.75, linewidth=1.1, label="Filtered/CAR signal before ICA exclusion")
-    axis.plot(time_axis, after, color="#2e7d32", alpha=0.95, linewidth=1.3, label="ICLabel-filtered reconstruction")
-    axis.set_title(f"Pre/post ICA-policy comparison: {channel}, {recording_tag}")
-    axis.set_xlabel("Time (seconds)")
-    axis.set_ylabel("Amplitude (uV)")
-    axis.legend(loc="upper right")
-    axis.grid(True, linestyle="--", alpha=0.5)
-    fig.tight_layout()
-    fig.savefig(waveform_path, dpi=300)
-    plt.close(fig)
+    applied_indices = policy_candidate_indices if apply_exclusions else []
+    if apply_exclusions:
+        reconstructed = raw.copy()
+        ica.apply(reconstructed, exclude=applied_indices, verbose=False)
+        reconstructed.save(
+            output_dirs["filtered"]
+            / f"{recording_tag}_iclabel_filtered_raw.fif",
+            overwrite=True,
+            verbose=False,
+        )
+
+        # The comparison starts from filtered/CAR data, so avoid calling it raw.
+        waveform_path = (
+            output_dirs["figures"] / f"{recording_tag}_pre_vs_post_ica.png"
+        )
+        sample_count = min(int(DISPLAY_SECONDS * sampling_rate), raw.n_times)
+        time_axis = np.arange(sample_count) / sampling_rate
+        channel = "Cz" if "Cz" in raw.ch_names else raw.ch_names[0]
+        before = raw.get_data(picks=[channel], start=0, stop=sample_count)[0] * 1e6
+        after = (
+            reconstructed.get_data(picks=[channel], start=0, stop=sample_count)[0]
+            * 1e6
+        )
+        fig, axis = plt.subplots(figsize=(12, 4.5), dpi=200)
+        axis.plot(
+            time_axis,
+            before,
+            color="#d9534f",
+            linestyle="--",
+            alpha=0.75,
+            linewidth=1.1,
+            label="Filtered/CAR signal before ICA exclusion",
+        )
+        axis.plot(
+            time_axis,
+            after,
+            color="#2e7d32",
+            alpha=0.95,
+            linewidth=1.3,
+            label="ICLabel-policy reconstruction",
+        )
+        axis.set_title(f"Pre/post ICA-policy comparison: {channel}, {recording_tag}")
+        axis.set_xlabel("Time (seconds)")
+        axis.set_ylabel("Amplitude (uV)")
+        axis.legend(loc="upper right")
+        axis.grid(True, linestyle="--", alpha=0.5)
+        fig.tight_layout()
+        fig.savefig(waveform_path, dpi=300)
+        plt.close(fig)
+
+    elapsed = time.perf_counter() - start_time
 
     report = {
         "subject_id": subject_tag,
@@ -234,10 +276,16 @@ def evaluate_recording(
         "artifact_policy": {
             "artifact_classes": ARTIFACT_CLASSES,
             "minimum_predicted_class_probability": artifact_threshold,
-            "note": "ICLabel predictions are not manually verified ground truth.",
+            "automatic_reconstruction_applied": apply_exclusions,
+            "note": (
+                "ICLabel predictions and policy candidates are not manually "
+                "verified component ground truth."
+            ),
         },
-        "excluded_components_count": len(excluded_indices),
-        "excluded_indices": excluded_indices,
+        "artifact_policy_candidate_count": len(policy_candidate_indices),
+        "artifact_policy_candidate_indices": policy_candidate_indices,
+        "excluded_components_count": len(applied_indices),
+        "excluded_indices": applied_indices,
         "class_distribution": class_distribution,
         "mean_predicted_class_probability": round(float(np.mean(probabilities)), 6),
         "median_predicted_class_probability": round(float(np.median(probabilities)), 6),
@@ -257,7 +305,9 @@ def evaluate_recording(
         "Nyquist (Hz)": sampling_rate / 2.0,
         "Channels": len(raw.ch_names),
         "Total ICs": total_components,
-        "Artifacts Removed": len(excluded_indices),
+        "Artifact-Policy Candidates": len(policy_candidate_indices),
+        "Components Excluded From Reconstruction": len(applied_indices),
+        "Reconstruction Applied": apply_exclusions,
         "Brain": class_distribution["brain"],
         "Muscle": class_distribution["muscle artifact"],
         "Eye Blink": class_distribution["eye blink"],
@@ -287,10 +337,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--run-index", type=int, default=0)
     parser.add_argument("--all-recordings", action="store_true")
     parser.add_argument(
+        "--apply-exclusions",
+        action="store_true",
+        help=(
+            "Explicitly reconstruct EEG after excluding artifact-policy "
+            "candidates. Disabled by default."
+        ),
+    )
+    parser.add_argument(
         "--artifact-threshold",
         type=float,
         default=0.0,
-        help="Minimum predicted-class probability for excluding an artifact-labelled IC. Default 0 reproduces the existing argmax policy.",
+        help=(
+            "Minimum predicted-class probability for an artifact-policy "
+            "candidate. With --apply-exclusions, 0 reproduces the archived "
+            "argmax exclusion behavior."
+        ),
     )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     args = parser.parse_args()
@@ -302,7 +364,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     mne.set_log_level("ERROR")
-    output_dirs = create_output_dirs(args.output_dir)
+    output_dirs = create_output_dirs(
+        args.output_dir, include_reconstructed_data=args.apply_exclusions
+    )
     dataset = BNCI2014_001()
     summaries: list[dict[str, object]] = []
     benchmarks: list[dict[str, object]] = []
@@ -324,6 +388,7 @@ def main() -> None:
                 run_key,
                 output_dirs,
                 args.artifact_threshold,
+                args.apply_exclusions,
             )
             summaries.append(summary)
             benchmarks.append(benchmark)

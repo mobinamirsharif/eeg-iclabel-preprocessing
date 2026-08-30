@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "ICLabel EEG Preprocessing Robustness and Troubleshooting Case Study"
+type: software
+authors:
+  - family-names: "Mirsharif"
+    given-names: "Mobina"
+repository-code: "https://github.com/mobinamirsharif/eeg-iclabel-preprocessing"
