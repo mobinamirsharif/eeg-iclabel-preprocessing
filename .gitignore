@@ -25,3 +25,12 @@ data/
 
 # Local smoke-test artifacts
 results/controlled_experiment_smoke*/
+
+# Superseded reports excluded from the public repository
+/archive/legacy_reports/legacy_bci_final_model_report.pdf
+/archive/legacy_reports/legacy_deap_initial_report.pdf
+/archive/legacy_reports/legacy_deap_multistage_report.pdf
+/archive/legacy_reports/legacy_engineering_troubleshooting_report.pdf
+/archive/legacy_reports/legacy_deap_final_comprehensive_report.html
+/archive/legacy_reports/legacy_deap_technical_report.html
+/archive/legacy_reports/legacy_troubleshooting_implementation_log.html

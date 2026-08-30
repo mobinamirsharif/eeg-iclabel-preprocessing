@@ -39,7 +39,7 @@ The evidence-supported interpretation is that the unusual DEAP prediction distri
 - The four-condition controlled BCI experiment completed 36 subject-condition ICA fits and generated 540 component predictions with zero recorded failures.
 - The archived final DEAP screening output has been reconciled to 960 components from 32 subjects and 160 trials used for ICA.
 - The complete Baseline-to-V4 DEAP development history is preserved under `archive/deap_history/`.
-- Superseded PDF and HTML reports are preserved under `archive/legacy_reports/` for historical review and must not be treated as current findings.
+- The public repository preserves reproducible code, reconciled artifacts, and evidence-aware conclusions for academic review.
 - Raw or licensed EEG datasets, reconstructed EEG files, credentials, and local filesystem paths are not included.
 
 ## Verified reconciliation of the existing BCI run
@@ -130,9 +130,7 @@ This sequence is descriptive, not a one-factor ablation study. Several settings 
 
 ![Reconciled DEAP version history](results/deap_version_history/version_comparison.png)
 
-The archived scripts and reports retain the original development record. Their automatic-removal terminology and definitive physiological, GPU, clinical, or sampling-rate claims are superseded by the evidence-aware interpretation in this README.
-
-> **Historical-use warning:** Files under `archive/legacy_reports/` contain superseded conclusions. They must not be cited or presented as current findings. For a public release, the recommended approach is to omit them from the main release or place them in a clearly labelled historical release only after supervisor and DEAP-license review.
+The archived DEAP scripts and their safe aggregate numeric outputs retain the reproducible development record. Their original automatic-removal terminology and definitive physiological, GPU, clinical, or sampling-rate claims are superseded by the evidence-aware interpretation in this README. Superseded standalone reports are not included in the public repository.
 
 ## Reproduce the corrected artifacts
 
@@ -238,7 +236,6 @@ eeg-iclabel-preprocessing/
 ├── tests/
 ├── archive/
 │   ├── deap_history/
-│   ├── legacy_reports/
 │   ├── EXCLUDED_DATA_MANIFEST.csv
 │   └── SOURCE_MANIFEST.csv
 ├── src/
@@ -258,9 +255,9 @@ eeg-iclabel-preprocessing/
     └── summary_tables/
 ```
 
-Raw DEAP/BCI files, reconstructed FIF files, individual signal traces/topographies, compressed archives, credentials, and dataset caches are excluded from Git. The DEAP license restricts redistribution, so users should obtain it from the official source under its own terms. Legacy reports are retained for private historical review; the recommended public-release policy is to omit them from the main release or publish them only as a clearly labelled historical release after review against the DEAP EULA and the corrected conclusions.
+Raw DEAP/BCI files, reconstructed FIF files, individual signal traces/topographies, compressed archives, credentials, dataset caches, and superseded standalone reports are excluded from Git. The DEAP license restricts redistribution, so users should obtain it from the official source under its own terms. The public repository preserves the reproducible code, reconciled artifacts, and current evidence-aware conclusions.
 
-No repository license has been selected yet. Before a public release, evaluate a standard code license such as MIT or BSD-3-Clause with the project supervisor or institution, but select it only after deciding how the code should be reused. A code license does not override dataset licenses.
+No repository license has been selected yet. Evaluate a standard code license such as MIT or BSD-3-Clause with the project supervisor or institution before defining reuse terms. A code license does not override dataset licenses.
 
 ## Evidence-aware interpretation
 
