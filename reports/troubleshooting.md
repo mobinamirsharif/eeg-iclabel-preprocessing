@@ -1,6 +1,6 @@
 # Troubleshooting timeline
 
-The original scripts, per-subject prediction reports, aggregate outputs, and legacy PDFs for this timeline are preserved under `archive/`. The current interpretation below supersedes definitive claims made in the historical reports.
+The repository preserves the original historical scripts, per-subject ICLabel prediction reports, aggregate numeric outputs, and reconciled artifacts under `archive/deap_history/`. Superseded standalone PDF and HTML reports are not included in the public repository. The current interpretation below supersedes definitive claims made during the historical troubleshooting process.
 
 ## 1. Initial DEAP batch evaluation
 

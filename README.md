@@ -216,7 +216,7 @@ Rebuild the five-stage historical comparison from the versioned archive:
 
 ### Run validation tests without running ICA
 
-The validation suite reads only the committed CSV and JSON artifacts. It does not download either dataset or execute ICA:
+`requirements.txt` contains the scientific runtime dependencies needed to execute the EEG/ICLabel pipelines. `requirements-test.txt` contains only the lightweight dependencies needed to validate the committed CSV and JSON artifacts. The validation suite and GitHub Actions intentionally use `requirements-test.txt` so they can run without downloading either dataset, executing ICA, or installing the full scientific runtime stack.
 
 ```powershell
 & $python -m pip install --requirement .\requirements-test.txt
