@@ -6,6 +6,8 @@ The repository preserves the original historical scripts, per-subject ICLabel pr
 
 The ICLabel DEAP experiments in this repository were performed on the distributed preprocessed DEAP Python files, not on the original raw DEAP recordings. In the Kaggle package used by the project, the implemented scripts read `s01.dat` through `s32.dat` from `data_preprocessed_python`; the loaded arrays used the `(40, 40, 8064)` trial-by-channel-by-sample layout. Although the local distribution also contains audio-stimulus and metadata directories, no raw/original EEG recording directory was used by the pipeline.
 
+This provenance was not known when the project began: the downloaded package was initially treated as the dataset available for the planned EEG analysis, before its upstream preprocessing status had been identified. Later troubleshooting and dataset-provenance inspection established that the analysis inputs were the distributed `data_preprocessed_python` files rather than original BioSemi/BDF recordings. That discovery changed the interpretation of the DEAP results and is now recorded as an explicit study limitation. The present analysis is not claimed to characterize ICLabel behavior on the original raw recordings.
+
 Upstream preprocessing had already been applied before the repository's ICA/ICLabel stages. Its possible influence cannot be separated from the later processing choices using the existing experiment. It is therefore a plausible dataset-level contributor or limitation, not a confirmed explanation for the Heart Beat-dominant output. The exact cause remains unresolved.
 
 ## 1. Initial DEAP batch evaluation

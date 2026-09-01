@@ -12,6 +12,10 @@ In the archived final DEAP screening run, 775 of 960 independent components (80.
 
 The ICLabel DEAP experiments in this repository were performed on the distributed preprocessed DEAP Python files, not on the original raw DEAP recordings. In the Kaggle package used by the project, the implemented analyses read `s01.dat` through `s32.dat` from `data_preprocessed_python`; no raw/original EEG recording directory was used by the pipeline.
 
+At the beginning of the project, the downloaded DEAP package was initially assumed to represent the dataset used for the planned EEG analysis, and its upstream preprocessing status had not yet been identified. During subsequent troubleshooting and dataset-provenance inspection, we confirmed that the analysis files were the distributed `data_preprocessed_python` version rather than the original BioSemi/BDF recordings. This discovery changed the interpretation of the DEAP results and introduced upstream preprocessing as an explicit limitation of the study.
+
+No claim is therefore made that the present DEAP analysis characterizes ICLabel behavior on the original raw DEAP recordings.
+
 Because upstream preprocessing had already been applied before the present ICA/ICLabel workflow, its potential influence on the anomalous prediction distribution cannot be isolated from the current experiment and should be treated as a dataset-level limitation rather than a confirmed causal explanation.
 
 The standard preprocessed DEAP package contains 32 EEG channels followed by eight peripheral channels. It has no dedicated ECG channel, but it does include a Plethysmograph/BVP channel. This pipeline supplied only the first 32 EEG channels to ICA and ICLabel, so the BVP channel was not an ICLabel input. The resulting `Heart Beat` assignments were inferred from EEG independent components rather than directly from ECG/BVP input.
