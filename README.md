@@ -10,6 +10,10 @@ The project evaluates how dataset and preprocessing conditions may affect ICLabe
 
 In the archived final DEAP screening run, 775 of 960 independent components (80.73%) were predicted as `Heart Beat`. This unusually dominant prediction pattern was scientifically suspicious and required further investigation.
 
+The ICLabel DEAP experiments in this repository were performed on the distributed preprocessed DEAP Python files, not on the original raw DEAP recordings. In the Kaggle package used by the project, the implemented analyses read `s01.dat` through `s32.dat` from `data_preprocessed_python`; no raw/original EEG recording directory was used by the pipeline.
+
+Because upstream preprocessing had already been applied before the present ICA/ICLabel workflow, its potential influence on the anomalous prediction distribution cannot be isolated from the current experiment and should be treated as a dataset-level limitation rather than a confirmed causal explanation.
+
 The standard preprocessed DEAP package contains 32 EEG channels followed by eight peripheral channels. It has no dedicated ECG channel, but it does include a Plethysmograph/BVP channel. This pipeline supplied only the first 32 EEG channels to ICA and ICLabel, so the BVP channel was not an ICLabel input. The resulting `Heart Beat` assignments were inferred from EEG independent components rather than directly from ECG/BVP input.
 
 The absence of a cardiac reference from the ICLabel input does not by itself prove that the predictions were wrong, because cardiac activity can propagate into scalp EEG. It does mean that no ECG or BVP reference was used to directly validate those assignments as confirmed cardiac artifacts.
@@ -119,6 +123,8 @@ The 775 Heart Beat calls are an anomalous ICLabel prediction pattern, not confir
 ## Historical DEAP development record
 
 The repository retains the original Baseline, V1, V2, V3, and V4 scripts so the troubleshooting sequence is auditable. The table below is rebuilt from their archived cohort CSVs and uses all seven predicted classes:
+
+All five historical stages read the distributed preprocessed `sXX.dat` files from `data_preprocessed_python`; they did not start from the original raw DEAP recordings. Their outputs therefore describe ICLabel behavior after upstream DEAP preprocessing as well as after the processing implemented in this repository.
 
 | Stage | Main recorded change | ICs per subject | Heart Beat predictions |
 |---|---|---:|---:|
@@ -276,12 +282,15 @@ No repository license has been selected yet. Evaluate a standard code license su
 
 - MNE-ICALabel documents ICLabel as designed around extended Infomax ICA, common-average reference, and 1–100 Hz filtered EEG. It also states that the model can run outside those specifications and that the preprocessing effects were not established in the original ICLabel paper.
 - The preprocessed DEAP package is 128 Hz and bandwidth-limited; increasing a later software filter cutoff cannot restore frequencies already removed upstream.
+- The DEAP ICA/ICLabel analyses began with the distributed preprocessed Python files rather than raw recordings. Upstream preprocessing is therefore a plausible dataset-level contributor or limitation whose influence cannot be isolated by the current experiment; it is not a confirmed cause of the Heart Beat-dominant output.
 - The existing BCI comparison shows that the unusual DEAP Heart Beat pattern did not repeat in the selected 250 Hz BCI recordings. It does not by itself prove that sampling rate alone caused the DEAP behavior.
 - The completed controlled BCI comparison found very similar aggregate distributions at 250 Hz and 128 Hz under the shared 4–45 Hz passband. This shows that 128 Hz sampling alone did not reproduce the DEAP-like anomaly in the selected BCI recordings; it does not directly estimate the sampling-rate effect within DEAP or identify the cause of the DEAP output.
 
 ## Limitations and future work
 
 A direct replication of the four-condition sampling-rate experiment on DEAP cannot be performed with the available `data_preprocessed_python` package. These signals have already been downsampled to 128 Hz and preprocessed upstream. Upsampling such data would increase the sample count but would not recover spectral information removed by the earlier downsampling and band-limiting steps.
+
+Because the present analysis starts after that upstream preprocessing, it cannot determine whether those earlier operations partly influenced the unusual prediction distribution. The exact cause of the Heart Beat-dominant pattern remains unresolved.
 
 Therefore, the current repository does not make a direct causal inference about the effect of sampling rate on the DEAP anomaly. A valid DEAP sampling-rate comparison would require the original raw recordings and a controlled preprocessing pipeline that derives the compared sampling rates from the same raw acquisition. The raw DEAP recordings are not redistributed in this repository because of the dataset license.
 

@@ -2,6 +2,12 @@
 
 The repository preserves the original historical scripts, per-subject ICLabel prediction reports, aggregate numeric outputs, and reconciled artifacts under `archive/deap_history/`. Superseded standalone PDF and HTML reports are not included in the public repository. The current interpretation below supersedes definitive claims made during the historical troubleshooting process.
 
+## Source-package clarification
+
+The ICLabel DEAP experiments in this repository were performed on the distributed preprocessed DEAP Python files, not on the original raw DEAP recordings. In the Kaggle package used by the project, the implemented scripts read `s01.dat` through `s32.dat` from `data_preprocessed_python`; the loaded arrays used the `(40, 40, 8064)` trial-by-channel-by-sample layout. Although the local distribution also contains audio-stimulus and metadata directories, no raw/original EEG recording directory was used by the pipeline.
+
+Upstream preprocessing had already been applied before the repository's ICA/ICLabel stages. Its possible influence cannot be separated from the later processing choices using the existing experiment. It is therefore a plausible dataset-level contributor or limitation, not a confirmed explanation for the Heart Beat-dominant output. The exact cause remains unresolved.
+
 ## 1. Initial DEAP batch evaluation
 
 The first batch evaluation found a high proportion of Heart Beat predictions. An early physiological explanation linked this pattern to emotional video stimuli. That explanation is retained only as a rejected initial hypothesis.
@@ -35,7 +41,7 @@ This does not mean that the 32-channel data were full rank in every possible sen
 
 ## 7. Independent 250 Hz BCI comparison
 
-The unusual DEAP Heart Beat pattern was absent in the nine selected BCI recordings. This strengthens the case that the DEAP result is data/preprocessing dependent, but it does not isolate sampling rate from bandwidth, task, acquisition, upstream artifact processing, or other dataset differences.
+The severe DEAP Heart Beat dominance did not reproduce in the nine selected BCI recordings. This is supportive/control evidence that the pattern was not universal in the evaluated pipeline, but it does not identify the cause of the DEAP result or isolate sampling rate from bandwidth, task, acquisition, upstream DEAP preprocessing, or other dataset differences.
 
 ## 8. Class-accounting correction
 

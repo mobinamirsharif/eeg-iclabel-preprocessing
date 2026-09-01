@@ -74,7 +74,13 @@ BCI Competition IV Dataset 2a contains nine subjects, 22 EEG channels, three EOG
 
 ## DEAP constraints
 
-The existing DEAP scripts operate on a preprocessed package at 128 Hz. In the archived initial batch script, only five of the 40 available trials per subject were concatenated for ICA fitting, and the actual ICA call used 10 components despite a separate `N_COMPONENTS = 15` constant. These are reporting and implementation inconsistencies, not new biological findings.
+The ICLabel DEAP experiments in this repository were performed on the distributed preprocessed DEAP Python files, not on the original raw DEAP recordings. Within the Kaggle package used by the project, the scripts loaded `s01.dat` through `s32.dat` from `data_preprocessed_python` at 128 Hz. The verified file layout used by the project was `(40, 40, 8064)`: 40 trials, 40 channels, and 8,064 samples per trial. No raw/original EEG recording directory was used in the implemented pipeline.
+
+The local distributed package also contains `audio_stimuli_MIDI`, `audio_stimuli_MIDI_tempo24`, `Metadata`, and `metadata_xls` alongside `data_preprocessed_python`. Those sibling directories were not EEG inputs to the implemented ICA/ICLabel analysis.
+
+These Python files had already undergone upstream preprocessing before the repository's ICA/ICLabel workflow. The current experiment cannot isolate whether that earlier processing partly influenced the Heart Beat-dominant prediction distribution. Upstream preprocessing is therefore treated as a plausible dataset-level contributor and limitation, not as a confirmed cause; the exact cause remains unresolved.
+
+In the archived initial batch script, only five of the 40 available trials per subject were concatenated for ICA fitting, and the actual ICA call used 10 components despite a separate `N_COMPONENTS = 15` constant. These are reporting and implementation inconsistencies, not new biological findings.
 
 Increasing a downstream filter cutoff from 45 to 55 Hz cannot restore spectral content removed by upstream preprocessing. V2 is therefore treated as a software-cutoff/confidence probe, not restoration of a 45–55 Hz band.
 
