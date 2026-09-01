@@ -27,25 +27,33 @@ PSD and topography review found patterns compatible with possible misclassificat
 
 The observed Heart Beat proportion changed when the requested number of ICA components changed. Each setting creates a different decomposition, so the trend is descriptive and not a direct causal relationship between component count and error.
 
-## 6. Independent 250 Hz BCI comparison
+## 6. Retrospective V3 rank-overflow diagnostic
+
+A targeted diagnostic reproduced the V3 preprocessing for preprocessed DEAP subject `s01`: first five trials, first 32 EEG channels, 0.5-second crossfade, 1–55 Hz filtering, common-average reference, and 15 requested ICA components. The estimated EEG rank was 31 before CAR and 31 after CAR. Because the request did not exceed the post-reference estimate (`15 < 31`), this test does not support ICA-rank overflow as the cause of the V3 Heart Beat-dominant output.
+
+This does not mean that the 32-channel data were full rank in every possible sense; the estimate was 31 rather than 32. The conclusion is specifically that the V3 request of 15 components did not exceed the estimated rank in this subject-level diagnostic.
+
+## 7. Independent 250 Hz BCI comparison
 
 The unusual DEAP Heart Beat pattern was absent in the nine selected BCI recordings. This strengthens the case that the DEAP result is data/preprocessing dependent, but it does not isolate sampling rate from bandwidth, task, acquisition, upstream artifact processing, or other dataset differences.
 
-## 7. Class-accounting correction
+## 8. Class-accounting correction
 
 The BCI subject reports contained all seven ICLabel classes, but the cohort CSV and donut chart omitted Channel Noise and Other. Thirteen Other components disappeared from the chart denominator. Reconciliation restored the full total of 135 ICs and changed the Brain percentage from 72.1% to 65.2%.
 
-## 8. Controlled comparison completed
+## 9. Controlled comparison completed
 
 The four-condition script completed 36 subject/condition fits with no failures. With a shared 4–45 Hz passband, the aggregate Brain proportions were 76.30% at 250 Hz and 75.56% at 128 Hz. The larger observed shifts followed passband changes, so the run does not support a general claim that 128 Hz alone causes ICLabel collapse.
 
-## 9. Archived final DEAP run reconciled
+## 10. Archived final DEAP run reconciled
 
 The later DEAP screening output contained 960 predictions, including 775 Heart Beat calls. Its metadata counted all 40 available trials per subject as processed even though the ICA input used five trials per subject. Reconciliation now reports 1,280 trials available and 160 trials used for ICA, retains all seven classes, and replaces “confirmed artifact removal” terminology with ICLabel prediction and artifact-policy terminology.
 
+The standard preprocessed package contains 32 EEG channels and eight peripheral channels. It has no dedicated ECG channel, but it does contain Plethysmograph/BVP. The pipeline supplied only the first 32 EEG channels to ICA and ICLabel, excluding BVP. Consequently, the Heart Beat assignments were inferred from EEG independent components without a cardiac reference for direct validation. This does not by itself show that the predictions were wrong, because cardiac activity can propagate into scalp EEG.
+
 The publication-safe repository includes the corrected aggregate outputs and a non-destructive screening pipeline. It excludes reconstructed FIF files, individual signal traces, participant topographies, and licensed raw data.
 
-## 10. Full Baseline-to-V4 history restored
+## 11. Full Baseline-to-V4 history restored
 
 The repository now includes byte-identical snapshots of the five historical scripts and the safe numeric results required to reproduce their cohort distributions. The reconciled sequence is:
 

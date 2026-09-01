@@ -11,9 +11,11 @@
 7. With a shared 4–45 Hz passband, the aggregate distributions at 250 Hz and 128 Hz were similar: Brain was 76.30% and 75.56%, respectively.
 8. Changing the passband produced larger aggregate shifts than changing sampling rate in the clean B-vs-D contrast. In particular, Line Noise predictions fell from 17.04% to 2.96% at 250 Hz and from 17.04% to 3.70% at 128 Hz when moving to 4–45 Hz.
 9. The archived final DEAP screening run used five of 40 available trials per subject, 32 subjects, and 30 ICA components per subject, yielding 960 predictions in total.
-10. That DEAP screening run produced 775 Heart Beat predictions (80.73%), 29 Brain predictions (3.02%), and 156 predictions across the remaining five classes. No cardiac reference channel was supplied to ICLabel.
-11. The reconciled historical sequence produced 219/320 (68.44%) Baseline, 234/320 (73.13%) V1, 233/320 (72.81%) V2, 372/480 (77.50%) V3, and 775/960 (80.73%) V4 Heart Beat predictions.
-12. The historical scripts show that all five stages used five of 40 trials per subject. Their cohort metadata recorded 1,280 available trials, while only 160 trials entered ICA in each stage.
+10. That DEAP screening run produced 775 Heart Beat predictions (80.73%), 29 Brain predictions (3.02%), and 156 predictions across the remaining five classes.
+11. The standard 40-channel preprocessed package has no dedicated ECG channel but does include a peripheral Plethysmograph/BVP channel. The pipeline supplied only the first 32 EEG channels to ICA and ICLabel, so BVP was not an input and no cardiac reference was used to directly validate the Heart Beat assignments.
+12. A retrospective `s01` diagnostic using the V3 settings estimated EEG rank 31 before and after common-average reference. The requested 15 ICA components did not exceed that estimate, so this test does not support ICA-rank overflow as the cause of the V3 Heart Beat-dominant output.
+13. The reconciled historical sequence produced 219/320 (68.44%) Baseline, 234/320 (73.13%) V1, 233/320 (72.81%) V2, 372/480 (77.50%) V3, and 775/960 (80.73%) V4 Heart Beat predictions.
+14. The historical scripts show that all five stages used five of 40 trials per subject. Their cohort metadata recorded 1,280 available trials, while only 160 trials entered ICA in each stage.
 
 ## Corrected BCI statement
 
@@ -23,7 +25,7 @@ This statement reports model outputs. It is not a ground-truth estimate of the p
 
 ## Corrected DEAP statement
 
-> In an archived screening run using five of 40 available trials for each of 32 DEAP subjects, ICLabel assigned 775 of 960 ICA components (80.73%) to Heart Beat. Only 32 EEG channels were supplied to ICLabel, with no ECG or plethysmography reference. This is an anomalous prediction distribution requiring validation; it is not evidence that 775 components were confirmed cardiac artifacts. The completed controlled BCI comparison does not support sampling rate alone as the explanation.
+> In an archived screening run using five of 40 available trials for each of 32 DEAP subjects, ICLabel assigned 775 of 960 ICA components (80.73%) to Heart Beat. Only the first 32 EEG channels were supplied to ICLabel; the package's peripheral BVP channel was excluded, and the package has no dedicated ECG channel. No cardiac reference was therefore used to directly validate the assignments. This does not prove that the predictions were wrong, because cardiac activity can propagate into scalp EEG. The distribution requires validation and is not evidence that 775 components were confirmed cardiac artifacts. The completed controlled BCI comparison does not support sampling rate alone as the explanation.
 
 ## Controlled-comparison statement
 
@@ -42,6 +44,7 @@ The result is specific to these recordings and this pipeline. ICA was refitted u
 - “The V1-V4 sequence proves that increasing component count causes Heart Beat collapse” — multiple settings changed and ICA was refitted independently.
 - “The visual review proved that every Heart Beat prediction was 100% Brain” — the selected plots support review but do not provide component ground truth.
 - “Rank-aware ICA solved the DEAP anomaly” — the archived V4 output contained the highest observed Heart Beat proportion, 80.73%.
+- “V3 requested more ICA components than the estimated EEG rank” — the `s01` V3 diagnostic estimated rank 31 before and after CAR, while V3 requested 15 components.
 - “ICLabel requires sampling above 200 Hz” — neither the archived outputs nor the controlled comparison establish that threshold.
 - “All recordings for all nine BCI subjects were processed” — the archived code selected the first session/run only.
 - “GPU benchmark” for the BCI pipeline — no GPU was explicitly selected or measured there.

@@ -10,7 +10,9 @@ The project evaluates how dataset and preprocessing conditions may affect ICLabe
 
 In the archived final DEAP screening run, 775 of 960 independent components (80.73%) were predicted as `Heart Beat`. This unusually dominant prediction pattern was scientifically suspicious and required further investigation.
 
-Only the first 32 EEG channels from the preprocessed DEAP package were supplied to ICLabel. No ECG or plethysmography reference channel was included. The resulting `Heart Beat` predictions therefore cannot be treated as confirmation that the corresponding components were cardiac artifacts.
+The standard preprocessed DEAP package contains 32 EEG channels followed by eight peripheral channels. It has no dedicated ECG channel, but it does include a Plethysmograph/BVP channel. This pipeline supplied only the first 32 EEG channels to ICA and ICLabel, so the BVP channel was not an ICLabel input. The resulting `Heart Beat` assignments were inferred from EEG independent components rather than directly from ECG/BVP input.
+
+The absence of a cardiac reference from the ICLabel input does not by itself prove that the predictions were wrong, because cardiac activity can propagate into scalp EEG. It does mean that no ECG or BVP reference was used to directly validate those assignments as confirmed cardiac artifacts.
 
 The historical Baseline-to-V4 troubleshooting sequence changed several variables, including channel mapping, downstream filtering requests, trial-boundary handling, ICA component count, and rank-selection logic. Because multiple variables changed and ICA was refitted at each stage, this sequence is descriptive rather than a controlled one-factor experiment. It cannot identify any individual setting as the unique cause of the anomalous distribution.
 
@@ -110,7 +112,7 @@ The archived `ICLabel_DEAP_final.py` run evaluated 32 subjects with 30 ICA compo
 | Channel Noise | 7 | 0.73% |
 | Other | 126 | 13.13% |
 
-The 775 Heart Beat calls are an anomalous ICLabel prediction pattern, not confirmation that 775 components were cardiac artifacts. Only the first 32 EEG channels were supplied to ICLabel; no ECG or plethysmography reference channel was supplied. The publication-safe pipeline reports predictions and probabilities but does not automatically reconstruct or publish “cleaned” EEG.
+The 775 Heart Beat calls are an anomalous ICLabel prediction pattern, not confirmation that 775 components were cardiac artifacts. Only the first 32 EEG channels were supplied to ICLabel. The package's peripheral BVP channel was excluded from that input, and no dedicated ECG channel exists in the package, so no cardiac reference was used to directly validate the assignments. This does not prove that the predictions were wrong, because cardiac activity can propagate into scalp EEG. The publication-safe pipeline reports predictions and probabilities but does not automatically reconstruct or publish “cleaned” EEG.
 
 ![Corrected DEAP screening distribution](results/deap_screening/deap_screening_distribution.png)
 
@@ -127,6 +129,8 @@ The repository retains the original Baseline, V1, V2, V3, and V4 scripts so the 
 | V4 | Rank-minus-one selection; all reports recorded rank 31 | 30 | 775/960 (80.73%) |
 
 This sequence is descriptive, not a one-factor ablation study. Several settings changed, ICA was refitted independently, and component indices are not comparable across fits. The observed rise does not prove that component count caused the Heart Beat output, and the series does not establish a unique Nyquist mechanism.
+
+A retrospective diagnostic reproduced the V3 preprocessing configuration for preprocessed DEAP subject `s01`: first five trials, first 32 EEG channels, 0.5-second crossfade, 1–55 Hz filtering, common-average reference, and 15 requested ICA components. The estimated EEG rank was 31 both before and after average referencing. Because 15 did not exceed 31, this test does not support ICA-rank overflow as the cause of the V3 Heart Beat-dominant output. This is a limited statement about the component request relative to the estimated rank; it is not a claim that the 32-channel data were full rank in every possible sense.
 
 ![Reconciled DEAP version history](results/deap_version_history/version_comparison.png)
 
@@ -207,6 +211,15 @@ The default 0.5-second trial-boundary crossfade reproduces the archived V4 confi
 ```
 
 The script requires a directory containing `s01.dat` through `s32.dat`. It does not download or redistribute DEAP, and it does not automatically remove predicted components. A crossfade/no-crossfade comparison requires a complete DEAP rerun and consistent regeneration of dependent outputs; no such comparison is claimed here. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
+
+Reproduce the lightweight V3 rank diagnostic for the default subject `s01` without fitting ICA or running ICLabel:
+
+```powershell
+& $python .\src\deap\check_deap_rank.py `
+  --data-dir '<PATH_TO_AUTHORIZED_DEAP_FILES>'
+```
+
+The diagnostic uses the first five trials and first 32 EEG channels, applies the archived V3 crossfade/filter/reference settings, and compares the 15-component request with the estimated EEG rank. It does not download DEAP or create subject-level outputs. Use `--subject s02` through `--subject s32` to inspect another authorized subject file.
 
 Rebuild the five-stage historical comparison from the versioned archive:
 

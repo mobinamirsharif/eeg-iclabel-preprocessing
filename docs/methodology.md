@@ -80,11 +80,19 @@ Increasing a downstream filter cutoff from 45 to 55 Hz cannot restore spectral c
 
 The later archived `ICLabel_DEAP_final.py` run used a corrected 32-channel order and 30 ICA components per subject, but still used five trials per subject for ICA. Its old aggregate metadata summed the 40 available trials per subject and called 1,280 trials “processed.” The reconciled metadata separates 1,280 available trials from 160 trials actually supplied to ICA.
 
-Across 960 ICA components, that screening run produced 775 Heart Beat predictions (80.73%). This is reported as an anomalous model-output distribution. The pipeline supplied only 32 EEG channels to ICLabel and did not supply ECG or plethysmography, so these calls cannot be verified as cardiac artifacts from the available ICLabel output alone.
+Across 960 ICA components, that screening run produced 775 Heart Beat predictions (80.73%). This is reported as an anomalous model-output distribution. The standard preprocessed DEAP package contains 40 channels: the first 32 are EEG, followed by hEOG, vEOG, zEMG, tEMG, GSR, Respiration, Plethysmograph/BVP, and Temperature. It does not contain a dedicated ECG channel. The pipeline selected only the first 32 EEG channels, so the peripheral BVP channel was not supplied to ICA or ICLabel. The Heart Beat assignments were therefore inferred from EEG independent components rather than directly from ECG/BVP input.
+
+Not supplying a cardiac reference does not establish that the ICLabel predictions were incorrect, because cardiac activity can propagate into scalp EEG. It does prevent direct validation of those assignments as confirmed cardiac artifacts from the pipeline output alone.
 
 `src/deap/run_deap_screening_pipeline.py` preserves the explicit five-trial screening configuration by default, records available and used trials separately, reports all seven classes, and performs no automatic component removal. The reconciled aggregate artifacts exclude FIF files, raw/cleaned signal traces, and individual participant topographies.
 
 The default 0.5-second trial-boundary crossfade is preserved solely to reproduce the archived V4 screening configuration. Crossfading changes the samples around each boundary and has not been validated as a universal EEG preprocessing method or as a correction for the anomalous ICLabel distribution. A no-crossfade run is already supported with `--crossfade-seconds 0`. Comparing crossfade and no-crossfade configurations would require a complete DEAP rerun with all dependent outputs regenerated; no such comparison is claimed by the committed results.
+
+### Retrospective V3 rank diagnostic
+
+`src/deap/check_deap_rank.py` reproduces the rank-relevant V3 preprocessing for an authorized DEAP subject file without fitting ICA or running ICLabel. For `s01`, the input had shape `(40, 40, 8064)` before selecting the first 32 EEG channels. Using the first five trials, a 0.5-second crossfade, 1–55 Hz filtering, and common-average reference, the estimated EEG rank was 31 before CAR and 31 after CAR. V3 requested 15 ICA components, so the request did not exceed the estimated post-reference rank (`15 < 31`).
+
+This subject-level result does not support ICA-rank overflow as the cause of the V3 Heart Beat-dominant output. It also does not establish that the 32-channel data are full rank in every possible sense: the estimated rank was 31 rather than 32. The supported conclusion is limited to the requested 15 components not exceeding the estimated rank in this diagnostic.
 
 ## Historical version reconciliation
 
