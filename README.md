@@ -41,7 +41,7 @@ Under the shared 4–45 Hz passband, the controlled 250 Hz and 128 Hz conditions
 
 This result does not support the earlier hypothesis that 128 Hz sampling alone causes a universal ICLabel “collapse.” It also does not establish passband, channel order, component count, rank handling, or any other individual setting as the sole explanation.
 
-The current evidence is consistent with a dataset- and preprocessing-dependent anomaly, but it does not identify the cause of the unusual DEAP distribution. Direct validation requires appropriate reference signals, expert component review, independently labelled ground truth, or a controlled analysis derived from the original raw DEAP recordings.
+The current evidence is consistent with a dataset- and preprocessing-dependent anomaly, but it does not identify the cause of the unusual DEAP distribution. Direct validation requires appropriate reference signals, expert component review, independently labelled ground truth, or a controlled analysis derived from the original raw DEAP recordings. This validation was not omitted by design; it could not be performed because the original recordings were not accessible during the study.
 
 ## Current status
 
@@ -266,6 +266,7 @@ eeg-iclabel-preprocessing/
 │   ├── deap/
 │   └── controlled_experiment/
 ├── docs/
+│   ├── data_access.md
 │   └── methodology.md
 ├── reports/
 │   ├── final_findings.md
@@ -299,6 +300,20 @@ Because the present analysis starts after that upstream preprocessing, it cannot
 Therefore, the current repository does not make a direct causal inference about the effect of sampling rate on the DEAP anomaly. A valid DEAP sampling-rate comparison would require the original raw recordings and a controlled preprocessing pipeline that derives the compared sampling rates from the same raw acquisition. The raw DEAP recordings are not redistributed in this repository because of the dataset license.
 
 Potential follow-up analyses using the available preprocessed package can evaluate sensitivity to accessible processing choices, such as trial-boundary crossfade, number of trials used for ICA, ICA dimensionality, and further restriction of the available frequency range. Such analyses would assess preprocessing sensitivity, not the effect of sampling rate itself.
+
+## Raw-data access limitation
+
+The present DEAP analyses use the distributed `data_preprocessed_python` files rather than the original BioSemi/BDF recordings.
+
+During troubleshooting, the preprocessing status of the available dataset package was identified and the distinction between the distributed preprocessed files and the original recordings became an explicit limitation of the study.
+
+An attempt was made to obtain access to the original DEAP recordings through the official project resources. At the time of this work, the original-data access route was not successfully available to the author. The DEAP authors were also contacted to request guidance or access to the original recordings, but no response had been received at the time the repository was finalized.
+
+For this reason, the current experiments cannot determine whether the unusual ICLabel prediction distribution would also occur when the analysis is started from the original raw DEAP recordings.
+
+No attempt was made to obtain or redistribute DEAP data through unauthorized or unofficial sources.
+
+If access to the original recordings becomes available in the future, a raw-data replication would be the appropriate next validation step. A concise provenance record is maintained in [`docs/data_access.md`](docs/data_access.md).
 
 ## Primary references
 
