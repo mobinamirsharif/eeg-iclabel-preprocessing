@@ -37,6 +37,8 @@ The original BCI analysis evaluated one selected recording for each of nine subj
 
 ## Main finding
 
+The following sampling-rate comparison was performed on BCI Competition IV Dataset 2a, not on the original raw DEAP recordings.
+
 Under the shared 4–45 Hz passband, the controlled 250 Hz and 128 Hz conditions produced similar aggregate Brain prediction proportions: 76.30% and 75.56%, respectively.
 
 This result does not support the earlier hypothesis that 128 Hz sampling alone causes a universal ICLabel “collapse.” It also does not establish passband, channel order, component count, rank handling, or any other individual setting as the sole explanation.
