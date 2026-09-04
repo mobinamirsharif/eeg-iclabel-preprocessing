@@ -182,7 +182,7 @@ def _write_rows(
     path: Path, fields: tuple[str, ...], rows: list[dict[str, object]]
 ) -> None:
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(_formatted_row(row, fields) for row in rows)
 
