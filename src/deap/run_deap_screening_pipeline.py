@@ -24,11 +24,27 @@ import pandas as pd
 from mne.preprocessing import ICA
 from mne_icalabel import label_components
 
+if __package__:
+    from .pipeline_helpers import (
+        EXPECTED_DEAP_SHAPE,
+        SAMPLING_RATE_HZ,
+        concatenate_trials_with_crossfade,
+        validate_deap_payload,
+        validate_screening_parameters,
+    )
+else:
+    from pipeline_helpers import (
+        EXPECTED_DEAP_SHAPE,
+        SAMPLING_RATE_HZ,
+        concatenate_trials_with_crossfade,
+        validate_deap_payload,
+        validate_screening_parameters,
+    )
+
 
 FINAL_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT_DIR = FINAL_ROOT / "results" / "deap_screening_run"
 RANDOM_SEED = 42
-SAMPLING_RATE_HZ = 128.0
 DEFAULT_LOW_FREQ_HZ = 1.0
 DEFAULT_HIGH_FREQ_HZ = 55.0
 DEFAULT_MAX_TRIALS = 5
@@ -98,17 +114,45 @@ def parse_args() -> argparse.Namespace:
         help="Authorized local directory containing DEAP sXX.dat files",
     )
     parser.add_argument("--subjects", nargs="+", type=int, default=list(range(1, 33)))
-    parser.add_argument("--max-trials", type=int, default=DEFAULT_MAX_TRIALS)
-    parser.add_argument("--n-components", type=int, default=DEFAULT_N_COMPONENTS)
-    parser.add_argument("--low-freq", type=float, default=DEFAULT_LOW_FREQ_HZ)
-    parser.add_argument("--high-freq", type=float, default=DEFAULT_HIGH_FREQ_HZ)
+    parser.add_argument(
+        "--max-trials",
+        type=int,
+        default=DEFAULT_MAX_TRIALS,
+        help=(
+            "Maximum trials per subject supplied to ICA (default: 5, matching "
+            "the archived V4-compatible screening configuration)"
+        ),
+    )
+    parser.add_argument(
+        "--n-components",
+        type=int,
+        default=DEFAULT_N_COMPONENTS,
+        help=(
+            "Requested ICA components before rank capping (default: 30, matching "
+            "the archived V4-compatible screening configuration)"
+        ),
+    )
+    parser.add_argument(
+        "--low-freq",
+        type=float,
+        default=DEFAULT_LOW_FREQ_HZ,
+        help="High-pass cutoff in Hz (historical V4-compatible default: 1)",
+    )
+    parser.add_argument(
+        "--high-freq",
+        type=float,
+        default=DEFAULT_HIGH_FREQ_HZ,
+        help="Low-pass cutoff in Hz (historical V4-compatible default: 55)",
+    )
     parser.add_argument(
         "--crossfade-seconds",
         type=float,
         default=DEFAULT_CROSSFADE_SECONDS,
         help=(
             "Experimental trial-boundary blend in seconds. The default 0.5 "
-            "reproduces the archived V4 configuration; use 0 for no crossfade."
+            "reproduces the archived V4-compatible configuration for historical "
+            "comparison; it is not a universally validated recommendation. Use "
+            "0 for no crossfade."
         ),
     )
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
@@ -116,56 +160,27 @@ def parse_args() -> argparse.Namespace:
 
 
 def validate_args(args: argparse.Namespace) -> None:
-    if not args.data_dir.is_dir():
-        raise FileNotFoundError(f"DEAP data directory not found: {args.data_dir}")
-    if any(subject < 1 or subject > 32 for subject in args.subjects):
-        raise ValueError("DEAP subject IDs must be between 1 and 32")
-    if args.max_trials < 1:
-        raise ValueError("max_trials must be positive")
-    if args.n_components < 2:
-        raise ValueError("n_components must be at least 2")
-    if not 0 <= args.crossfade_seconds < 2:
-        raise ValueError("crossfade_seconds must be in [0, 2)")
-    nyquist = SAMPLING_RATE_HZ / 2.0
-    if not 0 < args.low_freq < args.high_freq < nyquist:
-        raise ValueError(
-            f"Require 0 < low_freq < high_freq < Nyquist ({nyquist} Hz)"
-        )
-
-
-def concatenate_trials_with_crossfade(
-    trials: np.ndarray, crossfade_samples: int
-) -> np.ndarray:
-    continuous = trials[0].copy()
-    for next_trial in trials[1:]:
-        usable = min(crossfade_samples, continuous.shape[1], next_trial.shape[1])
-        if usable == 0:
-            continuous = np.concatenate([continuous, next_trial], axis=1)
-            continue
-        fade_out = np.linspace(1.0, 0.0, usable, endpoint=True)
-        fade_in = np.linspace(0.0, 1.0, usable, endpoint=True)
-        blended = (
-            continuous[:, -usable:] * fade_out
-            + next_trial[:, :usable] * fade_in
-        )
-        continuous = np.concatenate(
-            [continuous[:, :-usable], blended, next_trial[:, usable:]], axis=1
-        )
-    return continuous
+    validate_screening_parameters(
+        data_dir=args.data_dir,
+        subjects=args.subjects,
+        max_trials=args.max_trials,
+        n_components=args.n_components,
+        low_freq=args.low_freq,
+        high_freq=args.high_freq,
+        crossfade_seconds=args.crossfade_seconds,
+    )
 
 
 def load_subject_eeg(
     data_dir: Path, subject_id: int, max_trials: int, crossfade_seconds: float
-) -> tuple[mne.io.RawArray, int, int]:
+) -> tuple[mne.io.RawArray, int, int, tuple[int, ...]]:
     subject_path = data_dir / f"s{subject_id:02d}.dat"
     if not subject_path.is_file():
         raise FileNotFoundError(f"Subject file not found: {subject_path.name}")
 
     with subject_path.open("rb") as handle:
         payload = pickle.load(handle, encoding="latin1")
-    matrix = np.asarray(payload["data"], dtype=float)
-    if matrix.ndim != 3 or matrix.shape[1] < 32:
-        raise ValueError(f"Unexpected DEAP data shape for subject {subject_id}: {matrix.shape}")
+    matrix, observed_shape = validate_deap_payload(payload, f"s{subject_id:02d}")
 
     trials_available = int(matrix.shape[0])
     trials_used = min(max_trials, trials_available)
@@ -184,7 +199,7 @@ def load_subject_eeg(
         on_missing="raise",
         verbose=False,
     )
-    return raw, trials_available, trials_used
+    return raw, trials_available, trials_used, observed_shape
 
 
 def evaluate_subject(
@@ -294,17 +309,19 @@ def main() -> None:
     summaries: list[dict[str, object]] = []
     components: list[dict[str, object]] = []
     failures: list[dict[str, object]] = []
+    observed_input_shapes: dict[str, list[int]] = {}
 
     for subject_id in args.subjects:
         subject_tag = f"s{subject_id:02d}"
         print(f"Processing {subject_tag}")
         try:
-            raw, trials_available, trials_used = load_subject_eeg(
+            raw, trials_available, trials_used, observed_shape = load_subject_eeg(
                 args.data_dir,
                 subject_id,
                 args.max_trials,
                 args.crossfade_seconds,
             )
+            observed_input_shapes[subject_tag] = list(observed_shape)
             summary, details = evaluate_subject(
                 raw,
                 subject_tag,
@@ -315,6 +332,9 @@ def main() -> None:
             summaries.append(summary)
             components.extend(details)
         except Exception as exc:
+            observed_shape = getattr(exc, "observed_shape", None)
+            if observed_shape is not None:
+                observed_input_shapes[subject_tag] = list(observed_shape)
             failures.append(
                 {
                     "Subject": subject_tag,
@@ -332,6 +352,8 @@ def main() -> None:
     metadata = {
         "dataset": "DEAP preprocessed Python package; user-supplied licensed files",
         "subjects_requested": args.subjects,
+        "expected_input_shape": list(EXPECTED_DEAP_SHAPE),
+        "observed_input_shapes": observed_input_shapes,
         "trials": {
             "maximum_trials_per_subject_requested": args.max_trials,
             "note": "Available and used trial counts are reported separately per subject.",

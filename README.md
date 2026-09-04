@@ -104,7 +104,7 @@ The experiment completed for nine subjects using one consistently selected recor
 | C: 128 Hz, 1–63 Hz | 66.67% | 0.74% | 7.41% | 0.00% | 17.04% | 0.00% | 8.15% |
 | D: 128 Hz, 4–45 Hz | 75.56% | 1.48% | 8.15% | 2.96% | 3.70% | 0.00% | 8.15% |
 
-The clean sampling-rate contrast (B vs D, both 4–45 Hz) was similar at the aggregate level: Brain differed by 0.74 percentage points and Line Noise by 0.74 points. The passband contrasts (A vs B and C vs D) produced larger changes, especially a lower Line Noise proportion and a higher Brain proportion under 4–45 Hz. This result does not establish a universal causal rule: ICA was refitted per condition and ICLabel outputs are predictions rather than component ground truth.
+The controlled resampling contrast (B vs D, both 4–45 Hz) was similar at the aggregate level: Brain differed by 0.74 percentage points and Line Noise by 0.74 points. The passband contrasts (A vs B and C vs D) produced larger changes, especially a lower Line Noise proportion and a higher Brain proportion under 4–45 Hz. This result does not establish a universal causal rule: ICA was refitted per condition and ICLabel outputs are predictions rather than component ground truth.
 
 ![Controlled four-condition distribution](results/controlled_experiment/aggregate_condition_distribution.png)
 
@@ -156,6 +156,8 @@ Python 3.10 is the supported and tested version. Create or activate an isolated 
 & $python -m pip install --requirement .\requirements.txt
 ```
 
+The runtime requirements install MNE-ICALabel 0.9.0 with its CPU-oriented ONNX inference extra. PyTorch is not added as a second backend. A successful backend import confirms that inference support is installed; it does not by itself demonstrate full pipeline or dataset reproducibility.
+
 Rebuild the committed BCI summary artifacts from their source reports when those local reports are available:
 
 ```powershell
@@ -205,6 +207,14 @@ For a one-subject smoke run:
 & $python .\src\controlled_experiment\run_controlled_experiment.py --subjects 1
 ```
 
+Regenerate the exploratory paired B-versus-D summary from the committed condition table without rerunning ICA:
+
+```powershell
+& $python .\src\controlled_experiment\summarize_b_vs_d.py
+```
+
+This derived analysis pairs only the same subject/session/run, defines every difference as D minus B in percentage points, and uses 10,000 subject-level bootstrap resamples with seed 42. It describes the resampling intervention under the shared 4–45 Hz passband. The nine selected recordings do not support population-level confirmatory inference, and individual ICA components are never paired across conditions.
+
 Run the publication-safe DEAP screening pipeline with locally authorized DEAP files:
 
 ```powershell
@@ -213,7 +223,7 @@ Run the publication-safe DEAP screening pipeline with locally authorized DEAP fi
   --max-trials 5
 ```
 
-The default 0.5-second trial-boundary crossfade reproduces the archived V4 configuration. It is an experimental preprocessing choice, not a validated universal solution. Run a no-crossfade configuration with:
+The numerical defaults—five trials, 30 requested components, a 1–55 Hz passband, and a 0.5-second trial-boundary crossfade—reproduce the historical V4-compatible screening configuration. They are retained for reproducibility, not recommended as a universally validated preprocessing workflow. Each parameter can still be overridden explicitly. Run a no-crossfade configuration with:
 
 ```powershell
 & $python .\src\deap\run_deap_screening_pipeline.py `
@@ -222,7 +232,7 @@ The default 0.5-second trial-boundary crossfade reproduces the archived V4 confi
   --crossfade-seconds 0
 ```
 
-The script requires a directory containing `s01.dat` through `s32.dat`. It does not download or redistribute DEAP, and it does not automatically remove predicted components. A crossfade/no-crossfade comparison requires a complete DEAP rerun and consistent regeneration of dependent outputs; no such comparison is claimed here. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
+The script requires a directory containing `s01.dat` through `s32.dat` in the standard `(40, 40, 8064)` trial-by-channel-by-sample layout. A different shape is rejected with the expected and observed shapes; axes are never transposed or reinterpreted automatically. Future-run metadata records the observed shape for each loaded subject. The script does not download or redistribute DEAP, and it does not automatically remove predicted components. A crossfade/no-crossfade comparison requires a complete DEAP rerun and consistent regeneration of dependent outputs; no such comparison is claimed here. `src/deap/reconcile_archived_deap_results.py` reproduces the corrected aggregate artifacts from the archived summary files when those local files are available.
 
 Reproduce the lightweight V3 rank diagnostic for the default subject `s01` without fitting ICA or running ICLabel:
 
@@ -241,7 +251,7 @@ Rebuild the five-stage historical comparison from the versioned archive:
 
 ### Run validation tests without running ICA
 
-`requirements.txt` contains the scientific runtime dependencies needed to execute the EEG/ICLabel pipelines. `requirements-test.txt` contains only the lightweight dependencies needed to validate the committed CSV and JSON artifacts. The validation suite and GitHub Actions intentionally use `requirements-test.txt` so they can run without downloading either dataset, executing ICA, or installing the full scientific runtime stack.
+`requirements.txt` contains the scientific runtime dependencies needed to execute the EEG/ICLabel pipelines. `requirements-test.txt` contains only pytest and NumPy for the committed-artifact checks and focused synthetic helper tests. The validation suite and GitHub Actions intentionally use `requirements-test.txt` so they can run without downloading either dataset, executing ICA, or installing the full scientific runtime stack.
 
 ```powershell
 & $python -m pip install --requirement .\requirements-test.txt

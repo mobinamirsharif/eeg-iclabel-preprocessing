@@ -58,7 +58,7 @@ Every condition uses the same channel handling, common-average reference, extend
 ### Permitted comparisons
 
 - A vs B estimates the observed effect of the passband/preprocessing change at 250 Hz.
-- B vs D estimates the observed sampling-rate effect with a shared 4–45 Hz passband.
+- B vs D estimates the observed effect of the resampling intervention under a shared 4–45 Hz passband.
 - C vs D estimates the observed passband change at 128 Hz.
 - A vs C is descriptive only, because the feasible upper bandwidth changes along with sampling rate.
 
@@ -68,6 +68,8 @@ These comparisons do not establish a universal causal requirement for ICLabel.
 
 ICA decomposition is refit for each condition. Component order, sign, and content can change between fits. The analysis therefore does not zip or directly compare identically numbered components across conditions. It reports class counts, class proportions, mean/median predicted-class probability, EEG rank, and runtime at subject/condition level.
 
+The derived B-versus-D tables pair only rows with the same subject, session, and run, and define class-proportion differences as D minus B in percentage points. The summary uses 10,000 subject-level percentile-bootstrap resamples with seed 42 and is explicitly exploratory. Nine selected recordings do not support population-level confirmatory inference, and no individual ICA components are paired. The tables are regenerated from `results/controlled_experiment/condition_summary.csv` by `src/controlled_experiment/summarize_b_vs_d.py` without rerunning ICA.
+
 ## Dataset terminology
 
 BCI Competition IV Dataset 2a contains nine subjects, 22 EEG channels, three EOG channels, and a sampling rate of 250 Hz. The project uses “subject,” “participant,” or “آزمودنی,” not “patient.” BNCI2014_001 is MOABB’s dataset identifier; the original competition was BCI Competition IV (2008).
@@ -75,6 +77,8 @@ BCI Competition IV Dataset 2a contains nine subjects, 22 EEG channels, three EOG
 ## DEAP constraints
 
 The ICLabel DEAP experiments in this repository were performed on the distributed preprocessed DEAP Python files, not on the original raw DEAP recordings. Within the Kaggle package used by the project, the scripts loaded `s01.dat` through `s32.dat` from `data_preprocessed_python` at 128 Hz. The verified file layout used by the project was `(40, 40, 8064)`: 40 trials, 40 channels, and 8,064 samples per trial. No raw/original EEG recording directory was used in the implemented pipeline.
+
+The current DEAP screening loader treats any other array shape as an error because it explicitly supports that standard package layout. Error messages include both expected and observed shapes, and the loader does not automatically transpose or reinterpret axes. Future-run metadata records each observed subject input shape before the first 32 EEG channels are selected.
 
 The upstream preprocessing status of the downloaded package was not identified at the beginning of the project. It was established later through troubleshooting and dataset-provenance inspection that the analysis files were the distributed `data_preprocessed_python` version rather than original BioSemi/BDF recordings. The methodology and interpretation were revised accordingly; the present DEAP analysis is not presented as a characterization of ICLabel on the original raw recordings.
 
@@ -92,9 +96,11 @@ Across 960 ICA components, that screening run produced 775 Heart Beat prediction
 
 Not supplying a cardiac reference does not establish that the ICLabel predictions were incorrect, because cardiac activity can propagate into scalp EEG. It does prevent direct validation of those assignments as confirmed cardiac artifacts from the pipeline output alone.
 
-`src/deap/run_deap_screening_pipeline.py` preserves the explicit five-trial screening configuration by default, records available and used trials separately, reports all seven classes, and performs no automatic component removal. The reconciled aggregate artifacts exclude FIF files, raw/cleaned signal traces, and individual participant topographies.
+`src/deap/run_deap_screening_pipeline.py` preserves the historical V4-compatible numerical defaults: five trials, 30 requested components, a 1–55 Hz passband, and a 0.5-second crossfade. These defaults support reproducibility of that screening configuration and are not presented as a universally validated workflow. Users can override the individual parameters explicitly. The pipeline records selected settings plus available and used trials separately, reports all seven classes, and performs no automatic component removal. The reconciled aggregate artifacts exclude FIF files, raw/cleaned signal traces, and individual participant topographies.
 
-The default 0.5-second trial-boundary crossfade is preserved solely to reproduce the archived V4 screening configuration. Crossfading changes the samples around each boundary and has not been validated as a universal EEG preprocessing method or as a correction for the anomalous ICLabel distribution. A no-crossfade run is already supported with `--crossfade-seconds 0`. Comparing crossfade and no-crossfade configurations would require a complete DEAP rerun with all dependent outputs regenerated; no such comparison is claimed by the committed results.
+The default 0.5-second trial-boundary crossfade is preserved solely to reproduce the archived V4-compatible screening configuration. Crossfading changes the samples around each boundary and has not been validated as a universal EEG preprocessing method or as a correction for the anomalous ICLabel distribution. A no-crossfade run is already supported with `--crossfade-seconds 0`. Comparing crossfade and no-crossfade configurations would require a complete DEAP rerun with all dependent outputs regenerated; no such comparison is claimed by the committed results.
+
+The current committed DEAP analyses used MNE's `standard_1020` montage. MNE's `biosemi32` montage provides different coordinate definitions for the same channel labels. Because ICLabel uses scalp-topographic information, montage choice is a plausible sensitivity factor, but no controlled montage A/B experiment has been completed and montage has not been established as the cause of the Heart Beat-dominant DEAP distribution. Testing this factor would require a controlled rerun on authorized DEAP data while holding all other settings fixed.
 
 ### Retrospective V3 rank diagnostic
 

@@ -1,0 +1,10 @@
+Subject,Session,Run,Difference Direction,Unit,Brain Difference (pp),Muscle Difference (pp),Eye Blink Difference (pp),Heart Beat Difference (pp),Line Noise Difference (pp),Channel Noise Difference (pp),Other Difference (pp)
+sub-01,0train,0,D - B,percentage points,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+sub-02,0train,0,D - B,percentage points,13.333333,6.666667,0.000000,-20.000000,0.000000,0.000000,0.000000
+sub-03,0train,0,D - B,percentage points,-6.666667,0.000000,0.000000,0.000000,6.666667,0.000000,0.000000
+sub-04,0train,0,D - B,percentage points,0.000000,0.000000,0.000000,-6.666667,0.000000,0.000000,6.666667
+sub-05,0train,0,D - B,percentage points,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+sub-06,0train,0,D - B,percentage points,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+sub-07,0train,0,D - B,percentage points,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
+sub-08,0train,0,D - B,percentage points,-6.666667,0.000000,6.666667,0.000000,0.000000,0.000000,0.000000
+sub-09,0train,0,D - B,percentage points,-6.666667,0.000000,0.000000,0.000000,0.000000,0.000000,6.666667

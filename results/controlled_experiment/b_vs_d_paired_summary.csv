@@ -1,0 +1,8 @@
+Analysis,Class,Difference Direction,Unit,Selected Recordings,Bootstrap Resamples,Random Seed,Mean Difference,Median Difference,Exploratory 95% CI Lower,Exploratory 95% CI Upper
+Exploratory paired subject-level bootstrap,Brain,D - B,percentage points,9,10000,42,-0.740741,0.000000,-4.444444,3.703704
+Exploratory paired subject-level bootstrap,Muscle,D - B,percentage points,9,10000,42,0.740741,0.000000,0.000000,2.222222
+Exploratory paired subject-level bootstrap,Eye Blink,D - B,percentage points,9,10000,42,0.740741,0.000000,0.000000,2.222222
+Exploratory paired subject-level bootstrap,Heart Beat,D - B,percentage points,9,10000,42,-2.962963,0.000000,-7.407407,0.000000
+Exploratory paired subject-level bootstrap,Line Noise,D - B,percentage points,9,10000,42,0.740741,0.000000,0.000000,2.222222
+Exploratory paired subject-level bootstrap,Channel Noise,D - B,percentage points,9,10000,42,0.000000,0.000000,0.000000,0.000000
+Exploratory paired subject-level bootstrap,Other,D - B,percentage points,9,10000,42,1.481481,0.000000,0.000000,3.703704
